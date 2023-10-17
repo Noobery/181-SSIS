@@ -19,18 +19,9 @@ def delete_college(college_code):
     result = college_model.delete_college(college_code)
     return jsonify({'success': result == 'College deleted successfully'})
 
-@collegeRoute.route("/colleges", methods=["GET", "POST"])
-def update_colleges():
-    if request.method == "POST":
-        name = request.form.get("collegeName")
-        code = request.form.get("collegeCode")
+@collegeRoute.route("/colleges/edit/<string:college_code>", methods=["POST"])
+def edit_college(college_code):
+    new_name = request.form.get("collegeName")
+    result = college_model.update_college(college_code, new_name)
+    return jsonify({'success': result == 'College updated successfully'})
 
-        if code:
-            # If code exists, update the college
-            result = college_model.update_college(code, name)
-        else:
-            # If code is not provided, create a new college
-            result = college_model.create_college(name, code)
-
-    colleges = college_model.get_colleges()
-    return render_template("colleges.html", colleges=colleges, result=result)

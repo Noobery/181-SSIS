@@ -68,7 +68,7 @@
 <!-- Edit College Form Modal -->
 <div class="modal fade" id="editCollegeModal" tabindex="-1" role="dialog" aria-labelledby="editCollegeModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="" method="POST">
+        <form id="editCollegeForm" method="POST">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit College</h5>
@@ -76,21 +76,20 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="collegeCode">College Code</label>
+                        <label for="editCollegeCode">College Code</label>
                         <input type="text" class="form-control" id="editCollegeCode" name="collegeCode" placeholder="College Code" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="collegeName">College</label>
+                        <label for="editCollegeName">College</label>
                         <input type="text" class="form-control" id="editCollegeName" name="collegeName" placeholder="College Name">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary" id="editCollegeButton">Save changes</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
-
     {% endblock %}
