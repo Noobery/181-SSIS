@@ -25,3 +25,20 @@ $(document).ready(function() {
         }
     });
 });
+
+
+const editButtons = document.querySelectorAll('.edit-college');
+editButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const collegeCode = button.getAttribute('data-college-code');
+        const collegeName = button.getAttribute('data-college-name');
+
+        // Populate the edit form fields
+        const editCollegeCodeField = document.getElementById('editCollegeCode');
+        const editCollegeNameField = document.getElementById('editCollegeName');
+        editCollegeCodeField.value = collegeCode;
+        editCollegeNameField.value = collegeName;
+    });
+});
+
+
