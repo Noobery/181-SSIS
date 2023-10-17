@@ -1,1 +1,1 @@
-from . import collegeModels
+from . import collegeModels, courseModels

@@ -13,3 +13,6 @@ mysql = MySQL(app)
 # Import and register blueprints here
 from website.routes.collegeRoute import collegeRoute
 app.register_blueprint(collegeRoute)
+
+from website.routes.courseRoute import courseRoute
+app.register_blueprint(courseRoute)
