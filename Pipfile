@@ -8,6 +8,7 @@ flask = "2.3.3"
 mysqlclient = "*"
 flask-mysql-connector = "*"
 python-dotenv = "*"
+mysql-connector-python = "*"
 
 [dev-packages]
 

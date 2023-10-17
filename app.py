@@ -1,4 +1,9 @@
-from flask import Flask, render_template, url_for, request
+from website import app
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+"""from flask import Flask, render_template, url_for, request, Blueprint
 from flask_mysql_connector import MySQL
 
 
@@ -6,8 +11,8 @@ app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DATABASE'] = 'student_information_system'
+app.config['MYSQL_PASSWORD'] = 'Baptist69!'
+app.config['MYSQL_DATABASE'] = 'SSIS'
 
 mysql = MySQL(app)
 
@@ -43,3 +48,5 @@ def courses():
 
 if __name__ == '__app__':
     app.run (host = '0,0,0,0', debug = True)
+
+    """
