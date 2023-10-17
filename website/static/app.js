@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     // Listen for click events on the "Delete" buttons
     $('.delete-college').click(function(event) {
@@ -12,8 +11,9 @@ $(document).ready(function() {
                 url: '/colleges/delete/' + collegeCode,
                 success: function(data) {
                     if (data.success) {
-                        // Reload the page after successful delete
-                        location.reload();
+                        // Remove the deleted row from the table
+                        $(event.target).closest('tr').remove();
+                        alert('College deleted successfully.');
                     } else {
                         alert('Failed to delete the college.');
                     }
