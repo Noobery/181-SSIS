@@ -17,11 +17,10 @@ def colleges():
 @collegeRoute.route("/colleges/delete/<string:college_code>", methods=["DELETE"])
 def delete_college(college_code):
     result = college_model.delete_college(college_code)
-    return jsonify({'success': result == 'College deleted successfully'})
+    return jsonify({'success': result == 'College and its courses deleted successfully'})
 
 @collegeRoute.route("/colleges/edit/<string:college_code>", methods=["POST"])
 def edit_college(college_code):
     new_name = request.form.get("collegeName")
     result = college_model.update_college(college_code, new_name)
     return jsonify({'success': result == 'College updated successfully'})
-

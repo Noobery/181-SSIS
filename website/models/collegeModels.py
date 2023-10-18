@@ -22,9 +22,12 @@ class CollegeModel:
     def delete_college(cls, code):
         try:
             cur = mysql.new_cursor(dictionary=True)
+            # Delete courses associated with the college
+            cur.execute("DELETE FROM course WHERE college_code = %s", (code,))
+            # Delete the college
             cur.execute("DELETE FROM college WHERE code = %s", (code,))
             mysql.connection.commit()
-            return "College deleted successfully"
+            return "College and its courses deleted successfully"
         except Exception as e:
             return f"Failed to delete college: {str(e)}"
 
