@@ -16,3 +16,13 @@ class CourseModel:
         cur.execute("SELECT course.code AS course_code, course.name AS course_name, college.code AS college_code, college.name AS college_name FROM course INNER JOIN college ON course.college_code = college.code")
         courses = cur.fetchall()
         return courses
+
+    @classmethod
+    def update_course(cls, code, new_name, college_code):
+        try:
+            cur = mysql.new_cursor(dictionary=True)
+            cur.execute("UPDATE course SET name = %s, college_code = %s WHERE code = %s", (new_name, college_code, code))
+            mysql.connection.commit()
+            return "Course updated successfully"
+        except Exception as e:
+            return f"Failed to update course: {str(e)}"

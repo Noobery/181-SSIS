@@ -31,6 +31,7 @@ class CollegeModel:
         except Exception as e:
             return f"Failed to delete college: {str(e)}"
 
+    @classmethod
     def update_college(cls, code, new_name):
         try:
             cur = mysql.new_cursor(dictionary=True)

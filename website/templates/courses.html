@@ -105,7 +105,7 @@
                         <label for="editCollegeCode">College</label>
                         <select class="form-select" id="editCollegeCode" name="collegeCode">
                             {% for college in colleges %}
-                                <option value="{{ college.code }}">{{ college.name }} ({{ college.code }})</option> <!-- Add both name and code here -->
+                                <option value="{{ college.code }}">{{ college.name }} ({{ college.code }})</option>
                             {% endfor %}
                         </select>
                     </div>
