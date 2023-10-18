@@ -16,3 +16,6 @@ app.register_blueprint(collegeRoute)
 
 from website.routes.courseRoute import courseRoute
 app.register_blueprint(courseRoute)
+
+from website.routes.studentRoute import studentRoute
+app.register_blueprint(studentRoute)

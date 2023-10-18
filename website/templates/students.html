@@ -1,104 +1,156 @@
-{%extends 'layouts.html'%}
+{% extends 'layouts.html' %}
 
 {% block content %}
-    
+
 <div class="student_container">
   <div class="row">
-      <div class="col md-12">
-          <div class="d-flex justify-content-between align-items-center">
-              <h5>Student List</h5>
-              <div class="input-group w-50">
-                  <input type="text" class="form-control" placeholder="Search Students">
-                  <div class="input-group-append">
-                      <button class="btn btn-primary" type="button">Search</button>
-                  </div>
-              </div>
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">Add Student Data</button>
-
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5>Student List</h5>
+        <div class="input-group w-50">
+          <input type="text" class="form-control" placeholder="Search Students">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button">Search</button>
           </div>
-
-          <table class="table table-striped"> 
-              <tr>
-                  <th>ID</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Course</th>
-                  <th>Year</th>
-                  <th>Gender</th>
-                  <th>Action</th>
-              </tr>
-              <tr>
-                  <td>2021-1283</td>
-                  <td>Alrick Ivan</td>
-                  <td>Gicole</td>
-                  <td>Bachelor Science in Computer Science</td>
-                  <td>3rd Year</td>
-                  <td>Male</td>
-                  <td>
-                     <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="modaledit">Edit</a>
-
-                      <a href="" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this student?')">Delete</a>
-                  </td>
-              </tr>
-          </table>
+        </div>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal">Add Student Data</button>
       </div>
+      <table class="table table-striped">
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Course</th>
+          <th>Year</th>
+          <th>Gender</th>
+          <th>Action</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+          <td>{{ student.id }}</td>
+          <td>{{ student.firstname }}</td>
+          <td>{{ student.lastname }}</td>
+          <td>
+            {{ student.course_name }} ({{ student.course_code }})
+          </td>
+          <td>{{ student.year }}</td>
+          <td>{{ student.gender }}</td>
+          <td>
+            <button type="button" class="btn btn-primary edit-student" data-student-id="{{ student.id }}" data-bs-toggle="modal" data-bs-target="#editStudentModal">Edit</button>
+            <a href="#" class="btn btn-danger delete-student" data-student-id="{{ student.id }}">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
   </div>
 </div>
 
 <!-- Add Student Form Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Student Data</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="" method="POST">
+    <form action="/students" method="POST"> <!-- Updated action URL -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Student Data</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
           <div class="form-group">
             <label for="studentID">ID</label>
-            <input type="text" class="form-control" id="studentID" placeholder="Student ID">
+            <input type="text" class="form-control" id="studentID" name="studentID" placeholder="Student ID">
           </div>
           <div class="form-group">
             <label for="firstName">First Name</label>
-            <input type="text" class="form-control" id="firstName" placeholder="First Name">
+            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name">
           </div>
           <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name">
           </div>
           <div class="form-group">
             <label for="course">Course</label>
-            <select class="form-control" id="course">
-   
-              <option value="course1">Course 1</option>
-              <option value="course2">Course 2</option>
-           
+            <select class="form-select" id="course" name="courseCode"> <!-- Updated name attribute -->
+              {% for course in courses %}
+              <option value="{{ course.course_code }}">{{ course.course_name }} ({{ course.course_code }})</option>
+              {% endfor %}
             </select>
           </div>
           <div class="form-group">
             <label for="year">Year</label>
-            <input type="text" class="form-control" id="year" placeholder="Year">
+            <input type="text" class="form-control" id="year" name="year" placeholder="Year">
           </div>
           <div class="form-group">
             <label for="gender">Gender</label>
-            <select class="form-control" id="gender">
+            <select class="form-select" id="gender" name="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="nonbinary">Nonbinary</option>
+              
+              
+              <!-- Add more options as needed -->
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Student Form Modal -->
+<div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form id="editStudentForm" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Student Data</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="editStudentID">ID</label>
+            <input type="text" class="form-control" id="editStudentID" name="studentID" placeholder="Student ID" readonly>
+          </div>
+          <div class="form-group">
+            <label for="editFirstName">First Name</label>
+            <input type="text" class="form-control" id="editFirstName" name="firstName" placeholder="First Name">
+          </div>
+          <div class="form-group">
+            <label for="editLastName">Last Name</label>
+            <input type="text" class="form-control" id="editLastName" name="lastName" placeholder="Last Name">
+          </div>
+          <div class="form-group">
+            <label for="editCourse">Course</label>
+            <select class="form-select" id="editCourse" name="courseCode"> <!-- Updated name attribute -->
+              {% for course in courses %}
+              <option value="{{ course.course_code }}">{{ course.course_name }} ({{ course.course_code }})</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editYear">Year</label>
+            <input type="text" class="form-control" id="editYear" name="year" placeholder="Year">
+          </div>
+          <div class="form-group">
+            <label for="editGender">Gender</label>
+            <select class="form-select" id="editGender" name="gender">
               <option value="male">Male</option>
               <option value="female">Female</option>
               <!-- Add more options as needed -->
             </select>
           </div>
-        </form>
-      </div>  
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="editStudentButton">Save changes</button>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>
 
-
-    {% endblock %}
+{% endblock %}

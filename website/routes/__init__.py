@@ -1,1 +1,1 @@
-from . import collegeRoute, courseRoute
+from . import collegeRoute, courseRoute, studentRoute
