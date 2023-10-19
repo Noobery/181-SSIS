@@ -29,3 +29,24 @@ class StudentModel:
             return students
         except Exception as e:
             return f"Failed to retrieve students: {str(e)}"
+        
+    @classmethod
+    def delete_student(cls, id):
+        try:
+            cur = mysql.new_cursor(dictionary=True)
+            cur.execute("DELETE FROM student WHERE id = %s", (id,))
+            mysql.connection.commit()
+            return "Student deleted successfully"
+        except Exception as e:
+            return f"Failed to delete student: {str(e)}"
+
+    @classmethod
+    def update_student(cls, id, firstname, lastname, course_code, year, gender):
+        try:
+            cur = mysql.new_cursor(dictionary=True)
+            cur.execute("UPDATE student SET firstname = %s, lastname = %s, course_code = %s, year = %s, gender = %s WHERE id = %s", 
+                        (firstname, lastname, course_code, year, gender, id))
+            mysql.connection.commit()
+            return "Student updated successfully"
+        except Exception as e:
+            return f"Failed to update student: {str(e)}"
