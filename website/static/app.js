@@ -25,6 +25,24 @@ $(document).ready(function() {
         }
     });
 
+    function filterColleges() {
+        var searchText = $('#searchInput').val().toLowerCase();
+        $('#collegeRow').each(function() {
+            var collegeName = $(this).find('td:nth-child(2)').text().toLowerCase();
+            if (collegeName.includes(searchText)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    // Call the filter function when the search button is clicked
+    $('#searchButton').click(filterColleges);
+
+    // Call the filter function when the search input changes
+    $('#searchInput').on('input', filterColleges);
+
     $('.delete-course').click(function(event) {
         event.preventDefault();
         var courseCode = $(this).data('course-code');

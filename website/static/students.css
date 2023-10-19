@@ -82,3 +82,29 @@
 .student_container .input-group-append .btn-primary:hover {
     background-color: #0056b3;
 }
+
+/* Pagination Styles */
+.student-pagination .page-item.disabled .page-link {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    pointer-events: none;
+    border: 1px solid #ccc; /* Add a border to the disabled link */
+}
+
+.student-pagination .page-link {
+    color: #007BFF;
+    background-color: #fff;
+    border: 1px solid #ccc; /* Add a border to the active links */
+}
+
+.student-pagination .page-link:hover {
+    color: #0056b3;
+    background-color: #e0e0e0; /* Change the background on hover for active links */
+    border: 1px solid #007BFF; /* Highlight the border on hover */
+}
+
+
+
+
+
+

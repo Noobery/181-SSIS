@@ -13,7 +13,9 @@ class StudentModel:
             return f"Failed to create student: {str(e)}"
 
     @classmethod
-    def get_students(cls):
+    def get_students(cls, page_size: int, page_number: int):
+        print(page_size, page_number)
+        offset = (page_number - 1) * page_size
         try:
             cur = mysql.new_cursor(dictionary=True)
             cur.execute("""
@@ -23,10 +25,27 @@ class StudentModel:
                        college.name AS college_name, college.code AS college_code
                 FROM student
                 INNER JOIN course ON student.course_code = course.code
-                INNER JOIN college ON course.college_code = college.code
+                INNER JOIN college ON course.college_code = college.code 
+                LIMIT %s OFFSET %s
+            """, [page_size, offset])
+
+            results = cur.fetchall()
+             
+            count_cur = mysql.new_cursor(dictionary=True)
+            count_cur.execute("""
+                SELECT COUNT(*) as student_count FROM student
             """)
-            students = cur.fetchall()
-            return students
+            total_count = count_cur.fetchone()['student_count']
+            
+            has_prev = offset > 0
+            has_next = (offset + page_size) < total_count
+
+            return {
+                'results': results,
+                'total_count': total_count,
+                'has_prev': has_prev,
+                'has_next': has_next
+            }
         except Exception as e:
             return f"Failed to retrieve students: {str(e)}"
         

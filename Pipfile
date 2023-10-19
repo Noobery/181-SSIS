@@ -9,6 +9,7 @@ mysqlclient = "*"
 flask-mysql-connector = "*"
 python-dotenv = "*"
 mysql-connector-python = "*"
+flask-paginate = "*"
 
 [dev-packages]
 

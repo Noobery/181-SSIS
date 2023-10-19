@@ -10,6 +10,9 @@ college_model = CollegeModel()
 
 @studentRoute.route("/students", methods=["GET", "POST"])
 def students():
+    page_number = request.args.get('page_number', 1, type=int)
+    page_size = request.args.get('page_size', 10, type=int)
+
     if request.method == "POST":
         id = request.form.get("studentID")
         firstname = request.form.get("firstName")
@@ -19,10 +22,16 @@ def students():
         gender = request.form.get("gender")
         student_model.create_student(id, firstname, lastname, course_code, year, gender)
 
-    students = student_model.get_students()
+    students = student_model.get_students(page_number=page_number, page_size=page_size)
+    results = students.get("results")
+    has_prev = students.get("has_prev")
+    has_next = students.get("has_next")
+
+    print(has_next, has_prev)
+
     courses = course_model.get_courses()
     colleges = college_model.get_colleges()
-    return render_template("students.html", students=students, courses=courses, colleges=colleges)
+    return render_template("students.html", courses=courses, colleges=colleges, students=results, has_next=has_next, has_prev=has_prev, page_number=page_number)
 
 @studentRoute.route("/students/delete/<string:student_id>", methods=["DELETE"])
 def delete_student(student_id):
