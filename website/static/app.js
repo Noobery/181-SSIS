@@ -25,6 +25,32 @@ $(document).ready(function() {
         }
     });
 
+    $('.delete-course').click(function(event) {
+        event.preventDefault();
+        var courseCode = $(this).data('course-code');
+
+        if (confirm('Are you sure you want to delete this course?')) {
+            // Send a DELETE request using AJAX
+            $.ajax({
+                type: 'DELETE',
+                url: '/courses/delete/' + courseCode,
+                success: function(data) {
+                    if (data.success) {
+                        // Remove the deleted row from the table
+                        $(event.target).closest('tr').remove();
+                        alert('Course deleted successfully.');
+                    } else {
+                        alert('Failed to delete the course.');
+                    }
+                },
+                error: function() {
+                    alert('Failed to delete the course.');
+                }
+            });
+        }
+    });
+
+
     // Listen for the "Edit" button click for colleges
     const editButtonsCollege = document.querySelectorAll('.edit-college');
     editButtonsCollege.forEach(button => {

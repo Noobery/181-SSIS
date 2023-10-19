@@ -25,3 +25,7 @@ def edit_course(course_code):
     result = course_model.update_course(course_code, new_name, college_code)
     return jsonify({'success': result == 'Course updated successfully'})
 
+@courseRoute.route("/courses/delete/<string:course_code>", methods=["DELETE"])
+def delete_course(course_code):
+    result = course_model.delete_course(course_code)
+    return jsonify({'success': result == 'Course and its students deleted successfully'})
