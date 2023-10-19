@@ -40,4 +40,12 @@ class CollegeModel:
         except Exception as e:
             return f"Failed to update college: {str(e)}"
         
+    @classmethod
+    def search_colleges(cls, search_query):
+        cur = mysql.new_cursor(dictionary=True)
+        # Use placeholders and SQL LIKE with wildcards
+        cur.execute("SELECT code, name FROM college WHERE name LIKE %s OR code LIKE %s", ('%' + search_query + '%', '%' + search_query + '%'))
+        colleges = cur.fetchall()
+        return colleges
+
     

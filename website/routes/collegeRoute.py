@@ -11,8 +11,14 @@ def colleges():
         code = request.form.get("collegeCode")
         college_model.create_college(name, code)
 
-    colleges = college_model.get_colleges()
-    return render_template("colleges.html", colleges=colleges)
+    search_query = request.args.get("search")
+    if search_query:
+        colleges = college_model.search_colleges(search_query)
+    else:
+        colleges = college_model.get_colleges()
+
+    return render_template("colleges.html", colleges=colleges, search_query=search_query)
+
 
 @collegeRoute.route("/colleges/delete/<string:college_code>", methods=["DELETE"])
 def delete_college(college_code):
@@ -24,3 +30,4 @@ def edit_college(college_code):
     new_name = request.form.get("collegeName")
     result = college_model.update_college(college_code, new_name)
     return jsonify({'success': result == 'College updated successfully'})
+

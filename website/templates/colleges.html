@@ -8,11 +8,13 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h5>Colleges</h5>
                 <div class="input-group w-50">
-                    <input type="text" class="form-control" id="searchInput" placeholder="Search Colleges">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search Colleges" value="{{ search_query }}">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" id="searchButton" type="button">Search</button>
+                      <button class="btn btn-primary" id="searchButton" type="button">Search</button>
                     </div>
-                </div>
+                  </div>
+                  <div id="searchResults"></div>
+                  
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCollegeModal">Add College</button>
             </div>
             <table class="table table-striped">
