@@ -8,7 +8,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <h5>Student List</h5>
         <div class="input-group w-50">
-          <button type="button" class="btn btn-secondary" id = "refreshButtonStudent" name = "refreshButtonStudent">Refresh</button>
+          <button type="button" class="btn btn-secondary" id="refreshButtonStudent" name="refreshButtonStudent">Refresh</button>
           <input type="text" class="form-control" id="searchInputStudents" placeholder="Search Students" value="{{ search_query }}">
           <div class="input-group-append">
             <button class="btn btn-primary" id="searchButtonStudents" type="button">Search</button>
@@ -16,43 +16,49 @@
         </div>
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal">Add Student Data</button>
       </div>
-      <table class="table table-striped">
-        <tr>
-          <th>ID</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Course</th>
-          <th>Year</th>
-          <th>Gender</th>
-          <th>Action</th>
-        </tr>
-        {% for student in students %}
-        <tr>
-          <td>{{ student.id }}</td>
-          <td>{{ student.firstname }}</td>
-          <td>{{ student.lastname }}</td>
-          <td>
-            {{ student.course_name }} ({{ student.course_code }})
-          </td>
-          <td>{{ student.year }}</td>
-          <td>{{ student.gender }}</td>
-          <td>
-            <button type="button" class="btn btn-primary edit-student"
-              data-student-id="{{ student.id }}"
-              data-first-name="{{ student.firstname }}"
-              data-last-name="{{ student.lastname }}"
-              data-course-code="{{ student.course_code }}"
-              data-year="{{ student.year }}"
-              data-gender="{{ student.gender }}"
-              data-bs-toggle="modal"
-              data-bs-target="#editStudentModal">
-              Edit
-            </button>
-            <a href="#" class="btn btn-danger delete-student" data-student-id="{{ student.id }}">Delete</a>
-          </td>
-        </tr>
-        {% endfor %}
-      </table>
+
+      {% if students %}
+        <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Course</th>
+            <th>Year</th>
+            <th>Gender</th>
+            <th>Action</th>
+          </tr>
+          {% for student in students %}
+            <tr>
+              <td>{{ student.id }}</td>
+              <td>{{ student.firstname }}</td>
+              <td>{{ student.lastname }}</td>
+              <td>
+                {{ student.course_name }} ({{ student.course_code }})
+              </td>
+              <td>{{ student.year }}</td>
+              <td>{{ student.gender }}</td>
+              <td>
+                <button type="button" class="btn btn-primary edit-student"
+                  data-student-id="{{ student.id }}"
+                  data-first-name="{{ student.firstname }}"
+                  data-last-name="{{ student.lastname }}"
+                  data-course-code="{{ student.course_code }}"
+                  data-year="{{ student.year }}"
+                  data-gender="{{ student.gender }}"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editStudentModal">
+                  Edit
+                </button>
+                <a href="#" class="btn btn-danger delete-student" data-student-id="{{ student.id }}">Delete</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <p>No Data Available, Add Student First</p>
+      {% endif %}
+      
       <div class="row justify-content-end">
         <div class="col-auto">
           <nav aria-label="Page navigation" class="student-pagination">
@@ -60,15 +66,17 @@
               <li class="page-item {% if not has_prev %}disabled{% endif %}">
                 <a class="page-link" href="{{ url_for('students.students', page_number=page_number - 1) }}">Previous</a>
               </li>
-    
               <li class="page-item {% if not has_next %}disabled{% endif %}">
                 <a class="page-link" href="{{ url_for('students.students', page_number=page_number + 1) }}">Next</a>
               </li>
             </ul>
           </nav>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
 
 
 
