@@ -4,6 +4,21 @@ from website.models.collegeModels import CollegeModel
 collegeRoute = Blueprint('college', __name__)
 college_model = CollegeModel()
 
+# @collegeRoute.route("/colleges", methods=["GET", "POST"])
+# def colleges():
+#     if request.method == "POST":
+#         name = request.form.get("collegeName")
+#         code = request.form.get("collegeCode")
+#         college_model.create_college(name, code)
+
+#     search_query = request.args.get("search")
+#     if search_query:
+#         colleges = college_model.search_colleges(search_query)
+#     else:
+#         colleges = college_model.get_colleges()
+
+#     return render_template("colleges.html", colleges=colleges, search_query=search_query)
+
 @collegeRoute.route("/colleges", methods=["GET", "POST"])
 def colleges():
     if request.method == "POST":
@@ -12,12 +27,14 @@ def colleges():
         college_model.create_college(name, code)
 
     search_query = request.args.get("search")
-    if search_query:
-        colleges = college_model.search_colleges(search_query)
-    else:
-        colleges = college_model.get_colleges()
+    
+    if search_query is None:
+        search_query = ""  # Set a default value to an empty string if search_query is None
+    
+    colleges = college_model.search_colleges(search_query) if search_query else college_model.get_colleges()
 
     return render_template("colleges.html", colleges=colleges, search_query=search_query)
+
 
 
 @collegeRoute.route("/colleges/delete/<string:college_code>", methods=["DELETE"])
@@ -30,4 +47,3 @@ def edit_college(college_code):
     new_name = request.form.get("collegeName")
     result = college_model.update_college(college_code, new_name)
     return jsonify({'success': result == 'College updated successfully'})
-

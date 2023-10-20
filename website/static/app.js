@@ -41,11 +41,33 @@ $(document).ready(function() {
     });
     
     
-    
-    
-    
-      
-      
+    function redirectToColleges() {
+        window.location.href = '/colleges';
+    }
+
+        // Event listener for the refresh button
+    $('#refreshButton').on('click', function() {
+        redirectToColleges();
+    });
+
+    function redirectToCourse() {
+        window.location.href = '/courses';
+    }
+
+        // Event listener for the refresh button
+    $('#refreshButtonCourse').on('click', function() {
+        redirectToCourse();
+    });
+
+    function redirectToStudent() {
+        window.location.href = '/students';
+    }
+
+        // Event listener for the refresh button
+    $('#refreshButtonStudent').on('click', function() {
+        redirectToStudent();
+    });
+
 
     $('.delete-course').click(function(event) {
         event.preventDefault();
@@ -158,14 +180,6 @@ $(document).ready(function() {
         });
     });
 
-
-
-
-
-
-
-
-    // Edit college submission
     $(".edit-college").click(function () {
         var collegeCode = $(this).data("college-code");
         var collegeName = $(this).data("college-name");
@@ -196,7 +210,6 @@ $(document).ready(function() {
         });
     });
 
-    // Edit course submission
     $(".edit-course").click(function () {
         var courseCode = $(this).data("course-code");
         var courseName = $(this).data("course-name");
@@ -204,21 +217,21 @@ $(document).ready(function() {
 
         $("#editCourseCode").val(courseCode);
         $("#editCourseName").val(courseName);
-        $("#editCollegeCode").val(collegeCode); // Optionally, you can populate the college code field
+        $("#editCollegeCode").val(collegeCode);
     });
 
     $("#editCourseForm").submit(function (e) {
         e.preventDefault();
         var courseCode = $("#editCourseCode").val();
         var newCourseName = $("#editCourseName").val();
-        var collegeCode = $("#editCollegeCode").val(); // Add an input field for college code in your edit form
+        var collegeCode = $("#editCollegeCode").val(); 
 
         $.ajax({
             type: "POST",
             url: `/courses/edit/${courseCode}`,
             data: {
                 courseName: newCourseName,
-                collegeCode: collegeCode, // Include college code in the data
+                collegeCode: collegeCode, 
             },
             success: function (response) {
                 if (response.success) {

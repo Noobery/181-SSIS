@@ -14,17 +14,13 @@ def courses():
         college_code = request.form.get("collegeCode")
         course_model.create_course(name, code, college_code)
 
-    search_query = request.args.get("search")
-    courses = []
-    colleges = []
+    search_query = request.args.get("search", default="")  
 
-    if search_query:
-        courses = course_model.search_courses(search_query)
-    else:
-        courses = course_model.get_courses()
-        colleges = college_model.get_colleges()
+    courses = course_model.search_courses(search_query) if search_query else course_model.get_courses()
+    colleges = college_model.get_colleges()
 
     return render_template("courses.html", courses=courses, colleges=colleges, search_query=search_query)
+
 
 
 

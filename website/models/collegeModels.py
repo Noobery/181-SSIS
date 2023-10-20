@@ -22,7 +22,6 @@ class CollegeModel:
     def delete_college(cls, code):
         try:
             cur = mysql.new_cursor(dictionary=True)
-            # Delete the college
             cur.execute("DELETE FROM college WHERE code = %s", (code,))
             mysql.connection.commit()
             return "College and its courses deleted successfully"
@@ -43,7 +42,6 @@ class CollegeModel:
     @classmethod
     def search_colleges(cls, search_query):
         cur = mysql.new_cursor(dictionary=True)
-        # Use placeholders and SQL LIKE with wildcards
         cur.execute("SELECT code, name FROM college WHERE name LIKE %s OR code LIKE %s", ('%' + search_query + '%', '%' + search_query + '%'))
         colleges = cur.fetchall()
         return colleges

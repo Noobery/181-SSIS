@@ -14,14 +14,7 @@ def students():
     has_next = False
     
     if request.method == "POST":
-        # Handle form submission to add a new student
-        id = request.form.get("studentID")
-        firstname = request.form.get("firstName")
-        lastname = request.form.get("lastName")
-        course_code = request.form.get("courseCode")
-        year = request.form.get("year")
-        gender = request.form.get("gender")
-        student_model.create_student(id, firstname, lastname, course_code, year, gender)
+        add_student()
 
     # Handle search query
     search_query = request.args.get("search")
@@ -30,6 +23,8 @@ def students():
 
     courses = course_model.get_courses()
     students = []
+
+    search_query = "" if search_query is None else search_query
 
     if search_query:
         students = student_model.search_students(search_query)
@@ -49,6 +44,16 @@ def students():
         has_prev=has_prev,
         has_next=has_next,
     )
+
+def add_student():
+    id = request.form.get("studentID")
+    firstname = request.form.get("firstName")
+    lastname = request.form.get("lastName")
+    course_code = request.form.get("courseCode")
+    year = request.form.get("year")
+    gender = request.form.get("gender")
+    student_model.create_student(id, firstname, lastname, course_code, year, gender)
+
 
 @studentRoute.route("/students/delete/<string:student_id>", methods=["DELETE"])
 def delete_student(student_id):

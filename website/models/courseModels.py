@@ -31,7 +31,6 @@ class CourseModel:
     def delete_course(cls, code):
         try:
             cur = mysql.new_cursor(dictionary=True)
-            # Delete the course
             cur.execute("DELETE FROM course WHERE code = %s", (code,))
             mysql.connection.commit()
             return "Course and its students deleted successfully"

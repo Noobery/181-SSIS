@@ -31,7 +31,9 @@
     font-size: 14px;
     padding: 5px 10px;
 }
-
+.college_container #searchInput {
+    border: 1px solid #d3d3d3;
+}
 .college_container .btn-primary {
     background-color: blue;
     color: #fff;

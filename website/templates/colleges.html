@@ -6,9 +6,10 @@
     <div class="row">
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center">
-                <h5>Colleges</h5> <!-- Moved "Colleges" heading below the search bar -->
+                <h5>Colleges</h5> 
                 
-                <div class="input-group w-50 align-center"> <!-- Updated the input-group div -->
+                <div class="input-group w-50 align-center"> 
+                    <button type="button" class="btn btn-secondary" id = "refreshButton" name = "refreshButton">Refresh</button>
                     <input type="text" class="form-control" id="searchInput" placeholder="Search Colleges" value="{{ search_query }}">
                     <div class="input-group-append">
                         <button class="btn btn-primary" id="searchButton" type="button">Search</button>
@@ -53,11 +54,11 @@
                 <div class="modal-body">
                         <div class="form-group">
                             <label for="collegeCode">College Code</label>
-                            <input type="text" class="form-control" id="collegeCode" name="collegeCode" placeholder="Input College Code">
+                            <input type="text" class="form-control" id="collegeCode" name="collegeCode" placeholder="Input College Code" required>
                         </div>
                         <div class="form-group">
                             <label for="collegeName">College</label>
-                            <input type="text" class="form-control" id="collegeName" name="collegeName" placeholder="Input College">
+                            <input type="text" class="form-control" id="collegeName" name="collegeName" placeholder="Input College" required>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -86,7 +87,7 @@
                     </div>
                     <div class="form-group">
                         <label for="editCollegeName">College</label>
-                        <input type="text" class="form-control" id="editCollegeName" name="collegeName" placeholder="College Name">
+                        <input type="text" class="form-control" id="editCollegeName" name="collegeName" placeholder="College Name" required>
                     </div>
                 </div>
                 <div class="modal-footer">
