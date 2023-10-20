@@ -38,3 +38,19 @@ class CourseModel:
         except Exception as e:
             return f"Failed to delete course: {str(e)}"
 
+    @classmethod
+    def search_courses(cls, search_query):
+        cur = mysql.new_cursor(dictionary=True)
+        query = """
+        SELECT course.code AS course_code, course.name AS course_name, college.code AS college_code, college.name AS college_name
+        FROM course
+        INNER JOIN college ON course.college_code = college.code
+        WHERE course.name LIKE %s OR course.code LIKE %s
+        OR college.name LIKE %s OR college.code LIKE %s
+        """
+        search_query = f"%{search_query}%"
+        cur.execute(query, (search_query, search_query, search_query, search_query))
+        return cur.fetchall()
+
+
+

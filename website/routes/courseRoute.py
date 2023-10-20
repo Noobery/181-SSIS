@@ -14,9 +14,19 @@ def courses():
         college_code = request.form.get("collegeCode")
         course_model.create_course(name, code, college_code)
 
-    courses = course_model.get_courses()
-    colleges = college_model.get_colleges()
-    return render_template("courses.html", courses=courses, colleges=colleges)
+    search_query = request.args.get("search")
+    courses = []
+    colleges = []
+
+    if search_query:
+        courses = course_model.search_courses(search_query)
+    else:
+        courses = course_model.get_courses()
+        colleges = college_model.get_colleges()
+
+    return render_template("courses.html", courses=courses, colleges=colleges, search_query=search_query)
+
+
 
 @courseRoute.route("/courses/edit/<string:course_code>", methods=["POST"])
 def edit_course(course_code):

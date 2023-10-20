@@ -8,11 +8,12 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h5>Courses</h5>
                 <div class="input-group w-50">
-                    <input type="text" class="form-control" placeholder="Search Courses">
+                    <input type="text" class="form-control" id="searchInputCourse" placeholder="Search Courses" value="{{ search_query }}">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">Search</button>
+                        <button class="btn btn-primary" id="searchButtonCourse" type="button">Search</button>
                     </div>
                 </div>
+                
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCourseModal">Add Course</button>
             </div>
             <table class="table table-striped">
@@ -20,22 +21,16 @@
                     <th>Course Code</th>
                     <th>Course Name</th>
                     <th>College Code</th>
-                    <th>College Name</th> <!-- Add the column header for "College Name" -->
+                    <th>College Name</th>
                     <th>Action</th>
                 </tr>
                 
                 {% for course in courses %}
                     <tr>
-                        <td>{{ course.course_code }}</td> <!-- Update to course_code -->
-                        <td>{{ course.course_name }}</td> <!-- Update to course_name -->
-                        <td>{{ course.college_code }}</td> <!-- Add a new column for college_code -->
-                        <td>
-                            {% for college in colleges %}
-                                {% if college.code == course.college_code %}
-                                    {{ college.name }}
-                                {% endif %}
-                            {% endfor %}
-                        </td>
+                        <td>{{ course.course_code }}</td>
+                        <td>{{ course.course_name }}</td>
+                        <td>{{ course.college_code }}</td>
+                        <td>{{ course.college_name }}</td>
                         <td>
                             <button type="button" class="btn btn-primary edit-course" data-course-code="{{ course.course_code }}" data-course-name="{{ course.course_name }}" data-college-code="{{ course.college_code }}" data-bs-toggle="modal" data-bs-target="#editCourseModal">Edit</button>
                             <a href="#" class="btn btn-danger delete-course" data-course-code="{{ course.course_code }}">Delete</a>

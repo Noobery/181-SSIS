@@ -29,6 +29,12 @@ $(document).ready(function() {
         var searchQuery = $('#searchInput').val();
         window.location.href = "/colleges?search=" + searchQuery;
       });
+
+      $('#searchButtonCourse').on('click', function() {
+        var searchQueryCourse = $('#searchInputCourse').val();
+        window.location.href = "/courses?search=" + searchQueryCourse;
+    });
+    
     
     
       

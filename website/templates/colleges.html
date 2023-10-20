@@ -6,16 +6,18 @@
     <div class="row">
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center">
-                <h5>Colleges</h5>
-                <div class="input-group w-50">
+                <h5>Colleges</h5> <!-- Moved "Colleges" heading below the search bar -->
+                
+                <div class="input-group w-50 align-center"> <!-- Updated the input-group div -->
                     <input type="text" class="form-control" id="searchInput" placeholder="Search Colleges" value="{{ search_query }}">
                     <div class="input-group-append">
-                      <button class="btn btn-primary" id="searchButton" type="button">Search</button>
+                        <button class="btn btn-primary" id="searchButton" type="button">Search</button>
                     </div>
-                  </div>
-                  <div id="searchResults"></div>
-                  
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCollegeModal">Add College</button>
+                </div>
+                
+                <div>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCollegeModal">Add College</button>
+                </div>
             </div>
             <table class="table table-striped">
                 <tr>
