@@ -1,8 +1,13 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, redirect, url_for
+
 from website.models.collegeModels import CollegeModel
 
 collegeRoute = Blueprint('college', __name__)
 college_model = CollegeModel()
+
+@collegeRoute.route("/", methods=["GET"])
+def redirect_to_colleges():
+    return redirect(url_for("college.colleges"))
 
 @collegeRoute.route("/colleges", methods=["GET", "POST"])
 def colleges():
@@ -19,8 +24,6 @@ def colleges():
     colleges = college_model.search_colleges(search_query) if search_query else college_model.get_colleges()
 
     return render_template("colleges.html", colleges=colleges, search_query=search_query)
-
-
 
 @collegeRoute.route("/colleges/delete/<string:college_code>", methods=["DELETE"])
 def delete_college(college_code):
