@@ -35,6 +35,13 @@ $(document).ready(function() {
         window.location.href = "/courses?search=" + searchQueryCourse;
     });
     
+    $('#searchButtonStudents').on('click', function() {
+        var searchQueryStudents = $('#searchInputStudents').val();
+        window.location.href = "/students?search=" + searchQueryStudents;
+    });
+    
+    
+    
     
     
       
