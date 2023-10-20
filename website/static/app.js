@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    // Listen for click events on the "Delete" buttons
+    
+    ////// DELETION //////
     $('.delete-college').click(function(event) {
         event.preventDefault();
         var collegeCode = $(this).data('college-code');
@@ -24,51 +25,7 @@ $(document).ready(function() {
             });
         }
     });
-
-    $('#searchButton').on('click', function() {
-        var searchQuery = $('#searchInput').val();
-        window.location.href = "/colleges?search=" + searchQuery;
-      });
-
-      $('#searchButtonCourse').on('click', function() {
-        var searchQueryCourse = $('#searchInputCourse').val();
-        window.location.href = "/courses?search=" + searchQueryCourse;
-    });
     
-    $('#searchButtonStudents').on('click', function() {
-        var searchQueryStudents = $('#searchInputStudents').val();
-        window.location.href = "/students?search=" + searchQueryStudents;
-    });
-    
-    
-    function redirectToColleges() {
-        window.location.href = '/colleges';
-    }
-
-        // Event listener for the refresh button
-    $('#refreshButton').on('click', function() {
-        redirectToColleges();
-    });
-
-    function redirectToCourse() {
-        window.location.href = '/courses';
-    }
-
-        // Event listener for the refresh button
-    $('#refreshButtonCourse').on('click', function() {
-        redirectToCourse();
-    });
-
-    function redirectToStudent() {
-        window.location.href = '/students';
-    }
-
-        // Event listener for the refresh button
-    $('#refreshButtonStudent').on('click', function() {
-        redirectToStudent();
-    });
-
-
     $('.delete-course').click(function(event) {
         event.preventDefault();
         var courseCode = $(this).data('course-code');
@@ -119,6 +76,60 @@ $(document).ready(function() {
         }
     });
 
+    ////// DELETION //////
+
+    ////// SEARCH  //////
+
+
+    $('#searchButton').on('click', function() {
+        var searchQuery = $('#searchInput').val();
+        window.location.href = "/colleges?search=" + searchQuery;
+      });
+
+      $('#searchButtonCourse').on('click', function() {
+        var searchQueryCourse = $('#searchInputCourse').val();
+        window.location.href = "/courses?search=" + searchQueryCourse;
+    });
+    
+    $('#searchButtonStudents').on('click', function() {
+        var searchQueryStudents = $('#searchInputStudents').val();
+        window.location.href = "/students?search=" + searchQueryStudents;
+    });
+    
+    ////// SEARCH //////
+
+
+    /////// REFRESH BUTTON ///////
+    function redirectToColleges() {
+        window.location.href = '/colleges';
+    }
+
+    $('#refreshButton').on('click', function() {
+        redirectToColleges();
+    });
+
+    function redirectToCourse() {
+        window.location.href = '/courses';
+    }
+
+        // Event listener for the refresh button
+    $('#refreshButtonCourse').on('click', function() {
+        redirectToCourse();
+    });
+
+    function redirectToStudent() {
+        window.location.href = '/students';
+    }
+
+        // Event listener for the refresh button
+    $('#refreshButtonStudent').on('click', function() {
+        redirectToStudent();
+    });
+
+    /////// REFRESH BUTTON ///////
+
+
+    ////// TRANSFER DATA TO EDIT FORM //////
 
     // Listen for the "Edit" button click for colleges
     const editButtonsCollege = document.querySelectorAll('.edit-college');
@@ -135,7 +146,7 @@ $(document).ready(function() {
         });
     });
 
-    // Listen for the "Edit" button click for courses
+
     const editButtonsCourse = document.querySelectorAll('.edit-course');
     editButtonsCourse.forEach(button => {
         button.addEventListener('click', () => {
@@ -179,6 +190,10 @@ $(document).ready(function() {
             editGenderField.value = gender;
         });
     });
+
+    ////// TRANSFER DATA TO EDIT FORM //////
+
+    ////// EDIT //////
 
     $(".edit-college").click(function () {
         var collegeCode = $(this).data("college-code");
@@ -291,3 +306,4 @@ $(document).ready(function() {
     });
   });
     
+  ////// EDIT //////

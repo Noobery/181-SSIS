@@ -1,6 +1,4 @@
-{% extends 'layouts.html' %}
-
-{% block content %}
+{% extends 'layouts.html' %} {% block content %}
 
 <div class="student_container">
   <div class="row">
@@ -8,13 +6,39 @@
       <div class="d-flex justify-content-between align-items-center">
         <h5>Student List</h5>
         <div class="input-group w-50">
-          <button type="button" class="btn btn-secondary" id = "refreshButtonStudent" name = "refreshButtonStudent">Refresh</button>
-          <input type="text" class="form-control" id="searchInputStudents" placeholder="Search Students" value="{{ search_query }}">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="refreshButtonStudent"
+            name="refreshButtonStudent"
+          >
+            Refresh
+          </button>
+          <input
+            type="text"
+            class="form-control"
+            id="searchInputStudents"
+            placeholder="Search Students"
+            value="{{ search_query }}"
+          />
           <div class="input-group-append">
-            <button class="btn btn-primary" id="searchButtonStudents" type="button">Search</button>
+            <button
+              class="btn btn-primary"
+              id="searchButtonStudents"
+              type="button"
+            >
+              Search
+            </button>
           </div>
         </div>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal">Add Student Data</button>
+        <button
+          type="button"
+          class="btn btn-success"
+          data-bs-toggle="modal"
+          data-bs-target="#addStudentModal"
+        >
+          Add Student Data
+        </button>
       </div>
       <table class="table table-striped">
         <tr>
@@ -31,13 +55,13 @@
           <td>{{ student.id }}</td>
           <td>{{ student.firstname }}</td>
           <td>{{ student.lastname }}</td>
-          <td>
-            {{ student.course_name }} ({{ student.course_code }})
-          </td>
+          <td>{{ student.course_name }} ({{ student.course_code }})</td>
           <td>{{ student.year }}</td>
           <td>{{ student.gender }}</td>
           <td>
-            <button type="button" class="btn btn-primary edit-student"
+            <button
+              type="button"
+              class="btn btn-primary edit-student"
               data-student-id="{{ student.id }}"
               data-first-name="{{ student.firstname }}"
               data-last-name="{{ student.lastname }}"
@@ -45,10 +69,16 @@
               data-year="{{ student.year }}"
               data-gender="{{ student.gender }}"
               data-bs-toggle="modal"
-              data-bs-target="#editStudentModal">
+              data-bs-target="#editStudentModal"
+            >
               Edit
             </button>
-            <a href="#" class="btn btn-danger delete-student" data-student-id="{{ student.id }}">Delete</a>
+            <a
+              href="#"
+              class="btn btn-danger delete-student"
+              data-student-id="{{ student.id }}"
+              >Delete</a
+            >
           </td>
         </tr>
         {% endfor %}
@@ -58,125 +88,245 @@
           <nav aria-label="Page navigation" class="student-pagination">
             <ul class="pagination">
               <li class="page-item {% if not has_prev %}disabled{% endif %}">
-                <a class="page-link" href="{{ url_for('students.students', page_number=page_number - 1) }}">Previous</a>
+                <a
+                  class="page-link"
+                  href="{{ url_for('students.students', page_number=page_number - 1) }}"
+                  >Previous</a
+                >
               </li>
-    
+
               <li class="page-item {% if not has_next %}disabled{% endif %}">
-                <a class="page-link" href="{{ url_for('students.students', page_number=page_number + 1) }}">Next</a>
+                <a
+                  class="page-link"
+                  href="{{ url_for('students.students', page_number=page_number + 1) }}"
+                  >Next</a
+                >
               </li>
             </ul>
           </nav>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-
-
-
-<!-- Add Student Form Modal -->
-<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <form action="/students" method="POST"> 
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add Student Data</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="studentID">ID</label>
-            <input type="text" class="form-control" id="studentID" name="studentID" placeholder="Student ID" required>
+    <!-- Add Student Form Modal -->
+    <div
+      class="modal fade"
+      id="addStudentModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addStudentModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <form action="/students" method="POST">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add Student Data</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="studentID">ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="studentID"
+                  name="studentID"
+                  placeholder="Student ID"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstName"
+                  name="firstName"
+                  placeholder="First Name"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Last Name"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="course">Course</label>
+                <select class="form-select" id="course" name="courseCode">
+                  <!-- Updated name attribute -->
+                  <option value="" disabled selected>Select a course</option>
+                  {% for course in courses %}
+                  <option value="{{ course.course_code }}">
+                    {{ course.course_name }} ({{ course.course_code }})
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="year">Year</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="year"
+                  name="year"
+                  placeholder="Year"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-select" id="gender" name="gender" required>
+                  <option value="" disabled selected>Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="nonbinary">Nonbinary</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" required>
-          </div>
-          <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" required>
-          </div>
-          <div class="form-group">
-            <label for="course">Course</label>
-            <select class="form-select" id="course" name="courseCode" required> <!-- Updated name attribute -->
-              <option value="" disabled selected>Select a course</option>
-              {% for course in courses %}
-              <option value="{{ course.course_code }}">{{ course.course_name }} ({{ course.course_code }})</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="year">Year</label>
-            <input type="text" class="form-control" id="year" name="year" placeholder="Year" required>
-          </div>
-          <div class="form-group">
-            <label for="gender">Gender</label>
-            <select class="form-select" id="gender" name="gender">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="nonbinary">Nonbinary</option>
-            
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
-        </div>
+        </form>
       </div>
-    </form>
-  </div>
-</div>
+    </div>
 
-<!-- Update the Edit Student Form Modal to match student information -->
-<div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <form id="editStudentForm" method="POST">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Edit Student Data</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="editStudentID">ID</label>
-            <input type="text" class="form-control" id="editStudentID" name="studentID" placeholder="Student ID" readonly>
+    <!-- Update the Edit Student Form Modal to match student information -->
+    <div
+      class="modal fade"
+      id="editStudentModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="editStudentModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <form id="editStudentForm" method="POST">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Student Data</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="editStudentID">ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editStudentID"
+                  name="studentID"
+                  placeholder="Student ID"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="editFirstName">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editFirstName"
+                  name="firstName"
+                  placeholder="First Name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="editLastName">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editLastName"
+                  name="lastName"
+                  placeholder="Last Name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="editCourseCode">Course</label>
+                <select
+                  class="form-select"
+                  id="editCourseCode"
+                  name="courseCode"
+                >
+                  <!-- Updated name attribute -->
+                  {% for course in courses %}
+                  <option value="{{ course.course_code }}">
+                    {{ course.course_name }} ({{ course.course_code }})
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="editYear">Year</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editYear"
+                  name="year"
+                  placeholder="Year"
+                />
+              </div>
+              <div class="form-group">
+                <label for="editGender">Gender</label>
+                <select
+                  class="form-select"
+                  id="editGender"
+                  name="gender"
+                  required
+                >
+                  <option value="" disabled selected>Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="female">Nonbinary</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="editStudentButton"
+              >
+                Save changes
+              </button>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="editFirstName">First Name</label>
-            <input type="text" class="form-control" id="editFirstName" name="firstName" placeholder="First Name" >
-          </div>
-          <div class="form-group">
-            <label for="editLastName">Last Name</label>
-            <input type="text" class="form-control" id="editLastName" name="lastName" placeholder="Last Name">
-          </div>
-          <div class="form-group">
-            <label for="editCourseCode">Course</label>
-            <select class="form-select" id="editCourseCode" name="courseCode"> <!-- Updated name attribute -->
-              {% for course in courses %}
-              <option value="{{ course.course_code }}">{{ course.course_name }} ({{ course.course_code }})</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="editYear">Year</label>
-            <input type="text" class="form-control" id="editYear" name="year" placeholder="Year">
-          </div>
-          <div class="form-group">
-            <label for="editGender">Gender</label>
-            <select class="form-select" id="editGender" name="gender">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="female">Nonbinary</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" id="editStudentButton">Save changes</button>
-        </div>
+        </form>
       </div>
-    </form>
+    </div>
+
+    {% endblock %}
   </div>
 </div>
-
-{% endblock %}

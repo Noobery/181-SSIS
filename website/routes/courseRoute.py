@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, jsonify
 from website.models.courseModels import CourseModel
 from website.models.collegeModels import CollegeModel
 
@@ -20,8 +20,6 @@ def courses():
     colleges = college_model.get_colleges()
 
     return render_template("courses.html", courses=courses, colleges=colleges, search_query=search_query)
-
-
 
 
 @courseRoute.route("/courses/edit/<string:course_code>", methods=["POST"])
