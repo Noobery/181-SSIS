@@ -1,21 +1,29 @@
 from flask import Flask
 from flask_mysql_connector import MySQL
+import os
+from dotenv import load_dotenv
+from config import Config  # Import Config from the correct location
 
-app = Flask(__name__)
+load_dotenv()
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Baptist69!'
-app.config['MYSQL_DATABASE'] = 'SSIS'
+# Create the MySQL instance outside the Flask app
+mysql = MySQL()
 
-mysql = MySQL(app)
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)  # Use Config directly, not as a string
 
-# Import and register blueprints here
-from website.routes.collegeRoute import collegeRoute
-app.register_blueprint(collegeRoute)
+    # Initialize the MySQL extension
+    mysql.init_app(app)
 
-from website.routes.courseRoute import courseRoute
-app.register_blueprint(courseRoute)
+    # Import and register blueprints here
+    from website.routes.collegeRoute import collegeRoute
+    app.register_blueprint(collegeRoute)
 
-from website.routes.studentRoute import studentRoute
-app.register_blueprint(studentRoute)
+    from website.routes.courseRoute import courseRoute
+    app.register_blueprint(courseRoute)
+
+    from website.routes.studentRoute import studentRoute
+    app.register_blueprint(studentRoute)
+
+    return app
