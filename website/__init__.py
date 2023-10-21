@@ -3,6 +3,7 @@ from flask_mysql_connector import MySQL
 import os
 from dotenv import load_dotenv
 from config import Config  # Import Config from the correct location
+from flask_wtf.csrf import CSRFProtect
 
 load_dotenv()
 
@@ -15,6 +16,9 @@ def create_app():
 
     # Initialize the MySQL extension
     mysql.init_app(app)
+
+    csrf = CSRFProtect(app)
+    csrf.init_app(app)
 
     # Import and register blueprints here
     from website.routes.collegeRoute import collegeRoute
