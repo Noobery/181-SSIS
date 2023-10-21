@@ -10,7 +10,6 @@ flask-mysql-connector = "*"
 python-dotenv = "*"
 mysql-connector-python = "*"
 flask-paginate = "*"
-flask-wtf = "*"
 
 [dev-packages]
 
