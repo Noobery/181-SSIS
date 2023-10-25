@@ -83,8 +83,9 @@ class StudentModel:
         OR course.name LIKE %s
         OR course.code LIKE %s
         OR student.year LIKE %s
-        OR student.gender LIKE %s
+        OR student.gender = %s  -- This line ensures that only "Male" is included
         """
         search_query = f"%{search_query}%"
-        cur.execute(query, (search_query, search_query, search_query, search_query, search_query, search_query, search_query))
+        cur.execute(query, (search_query, search_query, search_query, search_query, search_query, search_query, "Male"))
         return cur.fetchall()
+
