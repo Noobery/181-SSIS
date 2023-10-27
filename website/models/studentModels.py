@@ -74,17 +74,20 @@ class StudentModel:
     def search_students(cls, search_query):
         cur = mysql.new_cursor(dictionary=True)
         query = """
-        SELECT student.id, student.firstname, student.lastname, course.code AS course_code, course.name AS course_name, student.year, student.gender
+        SELECT student.id, student.firstname, student.lastname, course.code AS course_code, course.name AS course_name, student.year, student.gender, college.code AS college_code, college.name AS college_name
         FROM student
         INNER JOIN course ON student.course_code = course.code
-        WHERE student.id LIKE %s
+        INNER JOIN college ON course.college_code = college.code
+        WHERE (student.id LIKE %s
         OR student.firstname LIKE %s
         OR student.lastname LIKE %s
         OR course.name LIKE %s
         OR course.code LIKE %s
+        OR college.name LIKE %s
+        OR college.code LIKE %s
         OR student.year LIKE %s
-        OR student.gender LIKE %s
+        OR student.gender LIKE %s)
         """
         search_query = f"%{search_query}%"
-        cur.execute(query, (search_query, search_query, search_query, search_query, search_query, search_query, search_query))
+        cur.execute(query, (search_query, search_query, search_query, search_query, search_query, search_query, search_query, search_query, search_query))
         return cur.fetchall()

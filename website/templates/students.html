@@ -17,29 +17,33 @@
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal">Add Student Data</button>
       </div>
 
-      {% if students %}
-        <table class="table table-striped">
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Course</th>
-            <th>Year</th>
-            <th>Gender</th>
-            <th>Action</th>
-          </tr>
-          {% for student in students %}
-            <tr>
-              <td>{{ student.id }}</td>
-              <td>{{ student.firstname }}</td>
-              <td>{{ student.lastname }}</td>
-              <td>
-                {{ student.course_name }} ({{ student.course_code }})
-              </td>
-              <td>{{ student.year }}</td>
-              <td>{{ student.gender }}</td>
-              <td>
-                <button type="button" class="btn btn-primary edit-student"
+        {% if students %}
+  <table class="table table-striped">
+      <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Course</th>
+          <th>College</th>
+          <th>Year</th>
+          <th>Gender</th>
+          <th>Action</th>
+      </tr>
+      {% for student in students %}
+      <tr>
+          <td>{{ student.id }}</td>
+          <td>{{ student.firstname }}</td>
+          <td>{{ student.lastname }}</td>
+          <td>
+              {{ student.course_name }} ({{ student.course_code }})
+          </td>
+          <td>
+              {{ student.college_name }} ({{ student.college_code }})
+          </td>
+          <td>{{ student.year }}</td>
+          <td>{{ student.gender }}</td>
+          <td>
+              <button type="button" class="btn btn-primary edit-student"
                   data-student-id="{{ student.id }}"
                   data-first-name="{{ student.firstname }}"
                   data-last-name="{{ student.lastname }}"
@@ -49,15 +53,16 @@
                   data-bs-toggle="modal"
                   data-bs-target="#editStudentModal">
                   Edit
-                </button>
-                <a href="#" class="btn btn-danger delete-student" data-student-id="{{ student.id }}">Delete</a>
-              </td>
-            </tr>
-          {% endfor %}
-        </table>
-      {% else %}
-        <p>No Data Available, Add Student First</p>
-      {% endif %}
+              </button>
+              <a href="#" class="btn btn-danger delete-student" data-student-id="{{ student.id }}">Delete</a>
+          </td>
+      </tr>
+      {% endfor %}
+  </table>
+  {% else %}
+  <p>No Data Available, Add Student First</p>
+  {% endif %}
+
       
       <div class="row justify-content-end">
         <div class="col-auto">
