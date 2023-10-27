@@ -51,7 +51,7 @@
 .student_container table th, .student_container table td {
     text-align: center;
     border: 1px solid #121212;
-    padding: 10px;
+    padding: 10px 5px 10px 5px;
 }
 
 /* Header Row Styles */
