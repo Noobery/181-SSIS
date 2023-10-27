@@ -1,5 +1,16 @@
 {% extends 'layouts.html' %} {% block content %}
 
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-primary mt-3" role="alert">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %} 
+
+
 <div class="college_container">
   <div class="row">
     <div class="col-md-12">
@@ -79,6 +90,7 @@
   </div>
 </div>
 
+ 
 
 <!-- Add College Form Modal -->
 <div

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, jsonify, redirect, url_for,flash
 
 from website.models.collegeModels import CollegeModel
 
@@ -15,14 +15,14 @@ def colleges():
         name = request.form.get("collegeName")
         code = request.form.get("collegeCode")
         college_model.create_college(name, code)
-
+        flash('College created successfully', 'success')
     search_query = request.args.get("search")
     
     if search_query is None:
         search_query = ""  # Set a default value to an empty string if search_query is None
     
     colleges = college_model.search_colleges(search_query) if search_query else college_model.get_colleges()
-
+    
     return render_template("colleges.html", colleges=colleges, search_query=search_query)
 
 @collegeRoute.route("/colleges/delete/<string:college_code>", methods=["DELETE"])

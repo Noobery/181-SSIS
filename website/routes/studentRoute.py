@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, flash
 from website.models.studentModels import StudentModel
 from website.models.courseModels import CourseModel
 from website.models.collegeModels import CollegeModel
@@ -53,6 +53,7 @@ def add_student():
     year = request.form.get("year")
     gender = request.form.get("gender")
     student_model.create_student(id, firstname, lastname, course_code, year, gender)
+    flash('Student created successfully', 'success')
 
 
 @studentRoute.route("/students/delete/<string:student_id>", methods=["DELETE"])

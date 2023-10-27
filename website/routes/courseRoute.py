@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, flash
 from website.models.courseModels import CourseModel
 from website.models.collegeModels import CollegeModel
 
@@ -13,6 +13,7 @@ def courses():
         code = request.form.get("courseCode")
         college_code = request.form.get("collegeCode")
         course_model.create_course(name, code, college_code)
+        flash('Courses created successfully', 'success')
 
     search_query = request.args.get("search", default="")  
 
