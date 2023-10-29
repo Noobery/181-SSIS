@@ -74,3 +74,8 @@ def edit_student(student_id):
     )
 
     return jsonify({'success': result == 'Student updated successfully'})
+
+@studentRoute.route("/student_profile")
+def student_profile():
+
+    return render_template("student_profiles.html")
