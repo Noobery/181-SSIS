@@ -47,7 +47,9 @@
     background-color: #fff;
     margin: 0;
 }
-
+.student_container .btn-dark {
+    padding: 5px 10px;
+}
 .student_container table th, .student_container table td {
     text-align: center;
     border: 1px solid #121212;
