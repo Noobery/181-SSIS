@@ -58,6 +58,7 @@
                   data-first-name="{{ student.firstname }}"
                   data-last-name="{{ student.lastname }}"
                   data-course-code="{{ student.course_code }}"
+                  data-college-name="{{ student.college_name }}"
                   data-year="{{ student.year }}"
                   data-gender="{{ student.gender }}"
                   data-bs-toggle="modal"
@@ -65,7 +66,19 @@
                   Edit
               </button>
               <a href="#" class="btn btn-danger delete-student" data-student-id="{{ student.id }}">Delete</a>
-              <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#studentProfileModal"><i class="fa-regular fa-eye"></i></button>
+              <button type="button" class="btn btn-dark view-student" 
+              data-student-id="{{ student.id }}"
+              data-first-name="{{ student.firstname }}"
+              data-last-name="{{ student.lastname }}"
+              data-course-code="{{ student.course_name}} ({{ student.course_code }})"
+              data-college-name="{{ student.college_name }} ({{ student.college_code }})"
+              data-year="{{ student.year }}"
+              data-gender="{{ student.gender }}" 
+              data-profile-pic="{{ student.profile_pic_url }}"
+              data-bs-toggle="modal" 
+              data-bs-target="#studentProfileModal">
+              <i class="fa-regular fa-eye"></i>
+              </button>
           </td>
       </tr>
       {% endfor %}
@@ -228,11 +241,20 @@
                               <div class="card-header">Profile Picture</div>
                               <div class="card-body text-center">
                                   <!-- Profile picture image-->
-                                  <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                                  {% for student in students %}
+                                    <img class="img-account-profile rounded-circle mb-2" src="{{ student.profile_pic_url }}" id="img-source_{{ student.id }}">
+                                    <input type="file" id="profilePicture" style="display: none;" name="profilePicture" data-student-id="{{ student.id }}" class="profilePictureInput">
+                                  {% endfor %}
+
                                   <!-- Profile picture help block-->
                                   <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                                   <!-- Profile picture upload button-->
-                                  <button class="btn btn-primary" type="button">Upload new image</button>
+                                  <label for="profilePicture" class="btn btn-primary">
+                                    Upload Profile Picture
+                                    
+                                </label>
+                               
+                                
                               </div>
                           </div>
                       </div>
@@ -245,37 +267,37 @@
                                       <!-- Form Group (ID)-->
                                       <div class="mb-3">
                                           <label class="small mb-1" for="inputID">ID</label>
-                                          <input class="form-control" id="inputID" type="text" placeholder="Enter ID" value="123456">
+                                          <input class="form-control" id="inputID" type="text" placeholder="Enter ID" readonly>
                                       </div>
                                       <!-- Form Group (First Name)-->
                                       <div class="mb-3">
                                           <label class="small mb-1" for="inputFirstName">First Name</label>
-                                          <input class="form-control" id="inputFirstName" type="text" placeholder="Enter First Name" value="John">
+                                          <input class="form-control" id="inputFirstName" type="text" placeholder="Enter First Name" readonly>
                                       </div>
                                       <!-- Form Group (Last Name)-->
                                       <div class="mb-3">
                                           <label class="small mb-1" for="inputLastName">Last Name</label>
-                                          <input class="form-control" id="inputLastName" type="text" placeholder="Enter Last Name" value="Doe">
+                                          <input class="form-control" id="inputLastName" type="text" placeholder="Enter Last Name" readonly>
                                       </div>
                                       <!-- Form Group (Course)-->
                                       <div class="mb-3">
                                           <label class="small mb-1" for="inputCourse">Course</label>
-                                          <input class="form-control" id="inputCourse" type="text" placeholder="Enter Course" value="Computer Science">
+                                          <input class="form-control" id="inputCourse" type="text" placeholder="Enter Course" readonly>
                                       </div>
                                       <!-- Form Group (College)-->
                                       <div class="mb-3">
                                           <label class="small mb-1" for="inputCollege">College</label>
-                                          <input class="form-control" id="inputCollege" type="text" placeholder="Enter College" value="Example University">
+                                          <input class="form-control" id="inputCollege" type="text" placeholder="Enter College" readonly>
                                       </div>
                                       <!-- Form Group (Year)-->
                                       <div class="mb-3">
                                           <label class="small mb-1" for="inputYear">Year</label>
-                                          <input class="form-control" id="inputYear" type="text" placeholder="Enter Year" value="2023">
+                                          <input class="form-control" id="inputYear" type="text" placeholder="Enter Year" readonly>
                                       </div>
                                       <!-- Form Group (Gender)-->
                                       <div class="mb-3">
                                           <label class="small mb-1" for="inputGender">Gender</label>
-                                          <input class="form-control" id="inputGender" type="text" placeholder="Enter Gender" value="Male">
+                                          <input class="form-control" id="inputGender" type="text" placeholder="Enter Gender" readonly>
                                       </div>
                                       <!-- Save changes button-->
                                       <button class="btn btn-primary" type="button">Save changes</button>
