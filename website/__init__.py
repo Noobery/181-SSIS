@@ -2,7 +2,8 @@ from flask import Flask
 from flask_mysql_connector import MySQL
 import os
 from dotenv import load_dotenv
-from config import Config  # Import Config from the correct location
+from config import Config, cloudConfig  # Import Config from the correct location
+import cloudinary
 
 
 load_dotenv()
@@ -13,10 +14,17 @@ mysql = MySQL()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)  # Use Config directly, not as a string
+    print(app.config)
 
+
+    cloudinary.config(
+        cloud_name=cloudConfig.CLOUD_NAME,
+        api_key=cloudConfig.API_KEY,
+        api_secret=cloudConfig.API_SECRET
+    )
     # Initialize the MySQL extension
     mysql.init_app(app)
-
+    print(app.config)
     # Import and register blueprints here
     from website.routes.collegeRoute import collegeRoute
     app.register_blueprint(collegeRoute)
