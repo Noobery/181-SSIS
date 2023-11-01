@@ -191,6 +191,41 @@ $(document).ready(function() {
         });
     });
 
+    const ProfileStudent = document.querySelectorAll('.view-student');
+    ProfileStudent.forEach(button => {
+    button.addEventListener('click', () => {
+        const studentID = button.getAttribute('data-student-id');
+        const firstName = button.getAttribute('data-first-name');
+        const lastName = button.getAttribute('data-last-name');
+        const courseCode = button.getAttribute('data-course-code');
+        const collegeName = button.getAttribute('data-college-name');
+        const year = button.getAttribute('data-year');
+        const gender = button.getAttribute('data-gender');
+        const profilePicUrl = button.getAttribute('data-profile-pic');
+
+        // Populate the edit form fields
+        const StudentIDField = document.getElementById('inputID');
+        const FirstNameField = document.getElementById('inputFirstName');
+        const LastNameField = document.getElementById('inputLastName');
+        const CourseField = document.getElementById('inputCourse');
+        const CollegeField = document.getElementById('inputCollege');
+        const YearField = document.getElementById('inputYear');
+        const GenderField = document.getElementById('inputGender');
+        const ProfilePicField = document.getElementById(`img-source_${studentID}`); // Use the correct ID
+
+        StudentIDField.value = studentID;
+        FirstNameField.value = firstName;
+        LastNameField.value = lastName;
+        CourseField.value = courseCode;
+        CollegeField.value = collegeName;
+        YearField.value = year;
+        GenderField.value = gender;
+        ProfilePicField.src = profilePicUrl; // Set the src attribute with profile_pic_url
+    });
+    });
+
+    
+
     ////// TRANSFER DATA TO EDIT FORM //////
 
     ////// EDIT //////
@@ -307,3 +342,58 @@ $(document).ready(function() {
   });
     
   ////// EDIT //////
+
+  ////// UPLOAD IMAGE //////
+
+  var CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dpydk3dsv/upload';
+  var CLOUDINARY_UPLOAD_PRESET = 'cjxybr6b';
+  
+  var uploadProfilePicButtons = document.querySelectorAll('.profilePictureInput');
+  var imgSources = document.querySelectorAll('.img-source');
+
+  uploadProfilePicButtons.forEach(function (uploadProfilePicButton) {
+    uploadProfilePicButton.addEventListener('change', function (event) {
+        var file = event.target.files[0];
+        var formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+        var studentId = event.target.getAttribute('data-student-id'); // Get the associated student ID
+
+        axios({
+            url: CLOUDINARY_URL,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: formData
+        }).then(function (res) {
+            console.log(res);
+
+            // Find the corresponding image element and update its src
+            var imgSource = document.querySelector('#img-source_' + studentId);
+            if (imgSource) {
+                imgSource.src = res.data.secure_url;
+                console.log('Student ID:', studentId);
+                console.log('Image Source Element:', imgSource);
+            }
+           
+            // Send the studentId and secure_url to your server for database update
+            axios.post('/update_profile_pic', { studentId: studentId, secureUrl: res.data.secure_url })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }).catch(function (err) {
+            console.log(err);
+        });
+    });
+});
+
+
+
+    
+  ////// UPLOAD IMAGE //////
+  
