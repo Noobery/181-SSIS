@@ -20,9 +20,10 @@ class StudentModel:
             cur = mysql.new_cursor(dictionary=True)
             cur.execute("""
                 SELECT student.id, student.firstname, student.lastname,
-                       student.course_code, student.year, student.gender,
-                       course.name AS course_name, course.code AS course_code,
-                       college.name AS college_name, college.code AS college_code
+                    student.course_code, student.year, student.gender,
+                    student.profile_pic_url,
+                    course.name AS course_name, course.code AS course_code,
+                    college.name AS college_name, college.code AS college_code
                 FROM student
                 INNER JOIN course ON student.course_code = course.code
                 INNER JOIN college ON course.college_code = college.code 
@@ -30,13 +31,13 @@ class StudentModel:
             """, [page_size, offset])
 
             results = cur.fetchall()
-             
+
             count_cur = mysql.new_cursor(dictionary=True)
             count_cur.execute("""
                 SELECT COUNT(*) as student_count FROM student
             """)
             total_count = count_cur.fetchone()['student_count']
-            
+
             has_prev = offset > 0
             has_next = (offset + page_size) < total_count
 
@@ -48,6 +49,7 @@ class StudentModel:
             }
         except Exception as e:
             return f"Failed to retrieve students: {str(e)}"
+
         
     @classmethod
     def delete_student(cls, id):
@@ -74,7 +76,7 @@ class StudentModel:
     def search_students(cls, search_query):
         cur = mysql.new_cursor(dictionary=True)
         query = """
-        SELECT student.id, student.firstname, student.lastname, course.code AS course_code, course.name AS course_name, student.year, student.gender, college.code AS college_code, college.name AS college_name
+        SELECT student.id, student.profile_pic_url, student.firstname, student.lastname, course.code AS course_code, course.name AS course_name, student.year, student.gender, college.code AS college_code, college.name AS college_name
         FROM student
         INNER JOIN course ON student.course_code = course.code
         INNER JOIN college ON course.college_code = college.code
@@ -91,3 +93,14 @@ class StudentModel:
         search_query = f"%{search_query}%"
         cur.execute(query, (search_query, search_query, search_query, search_query, search_query, search_query, search_query, search_query, search_query))
         return cur.fetchall()
+
+    @classmethod
+    def update_student_profile_pic(cls, student_id, profile_pic_url):
+        try:
+            cur = mysql.new_cursor(dictionary=True)
+            cur.execute("UPDATE student SET profile_pic_url = %s WHERE id = %s",
+                        (profile_pic_url, student_id))
+            mysql.connection.commit()
+            return "Profile picture updated successfully"
+        except Exception as e:
+            return f"Failed to update profile picture: {str(e)}"
