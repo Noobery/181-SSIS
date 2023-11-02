@@ -194,14 +194,14 @@ $(document).ready(function() {
     const ProfileStudent = document.querySelectorAll('.view-student');
     ProfileStudent.forEach(button => {
     button.addEventListener('click', () => {
-        const studentID = button.getAttribute('data-student-id');
-        const firstName = button.getAttribute('data-first-name');
-        const lastName = button.getAttribute('data-last-name');
-        const courseCode = button.getAttribute('data-course-code');
-        const collegeName = button.getAttribute('data-college-name');
-        const year = button.getAttribute('data-year');
-        const gender = button.getAttribute('data-gender');
-        const profilePicUrl = button.getAttribute('data-profile-pic');
+        const studentID = button.getAttribute('data-student-id-prof');
+        const firstName = button.getAttribute('data-first-name-prof');
+        const lastName = button.getAttribute('data-last-name-prof');
+        const courseCode = button.getAttribute('data-course-code-prof');
+        const collegeName = button.getAttribute('data-college-name-prof');
+        const year = button.getAttribute('data-year-prof');
+        const gender = button.getAttribute('data-gender-prof');
+        const profilePicUrl = button.getAttribute('data-profile-pic-prof');
 
         // Populate the edit form fields
         const StudentIDField = document.getElementById('inputID');
@@ -348,18 +348,22 @@ $(document).ready(function() {
   var CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dpydk3dsv/upload';
   var CLOUDINARY_UPLOAD_PRESET = 'cjxybr6b';
   
-  var uploadProfilePicButtons = document.querySelectorAll('.profilePictureInput');
-  var imgSources = document.querySelectorAll('.img-source');
+    var uploadProfilePicButtons = document.querySelectorAll('.profilePictureInput');
+    var imgSources = document.querySelectorAll('.img-account-profile');
 
-  uploadProfilePicButtons.forEach(function (uploadProfilePicButton) {
-    uploadProfilePicButton.addEventListener('change', function (event) {
-        var file = event.target.files[0];
-        var formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    uploadProfilePicButtons.forEach(function (uploadProfilePicButton) {
+        uploadProfilePicButton.addEventListener('change', function (event) {
+            var fileInput = event.currentTarget; // Use event.currentTarget
+            var file = fileInput.files[0];
+            
+            console.log('Change event fired:', event);
+            var formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
-        var studentId = event.target.getAttribute('data-student-id'); // Get the associated student ID
-
+            var studentId = fileInput.getAttribute('data-student-id-prof'); // Get the associated student ID
+            console.log('Student ID:', studentId);
+            console.log('File Data:', file);
         axios({
             url: CLOUDINARY_URL,
             method: 'POST',
@@ -392,8 +396,38 @@ $(document).ready(function() {
     });
 });
 
-
+$('#studentProfileModal').on('show.bs.modal', function (event) {
+    var modal = $(this);
+    modal.find('form')[0].reset(); // Reset form fields
+    modal.find('img.img-account-profile').attr('src', ''); // Clear profile picture
+  });
 
     
   ////// UPLOAD IMAGE //////
   
+  ///// FUNCTION FOR HIDING UPLOAD BUTTONS THAT AREN'T ASSOCIATED WITH THE STUDENT PROFILE //////
+  const ProfileStudent = document.querySelectorAll('.view-student');
+  ProfileStudent.forEach(button => {
+    button.addEventListener('click', () => {
+      const studentID = button.getAttribute('data-student-id-prof');
+
+      // Hide all upload buttons and inputs initially
+      const uploadButtons = document.querySelectorAll('.btn.btn-primary');
+      const uploadInputs = document.querySelectorAll('.profilePictureInput');
+      uploadButtons.forEach(uploadButton => {
+        uploadButton.style.display = 'none';
+      });
+      uploadInputs.forEach(uploadInput => {
+        uploadInput.style.display = 'none';
+      });
+
+      // Show the upload button and input associated with the clicked student
+      const uploadButton = document.querySelector(`label[for="profilePicture_${studentID}"]`);
+      const uploadInput = document.getElementById(`profilePicture_${studentID}`);
+
+      if (uploadButton && uploadInput) {
+        uploadButton.style.display = 'block';
+        uploadInput.style.display = 'none';
+      }
+    });
+  });

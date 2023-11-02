@@ -67,14 +67,14 @@
               </button>
               <a href="#" class="btn btn-danger delete-student" data-student-id="{{ student.id }}">Delete</a>
               <button type="button" class="btn btn-dark view-student" 
-              data-student-id="{{ student.id }}"
-              data-first-name="{{ student.firstname }}"
-              data-last-name="{{ student.lastname }}"
-              data-course-code="{{ student.course_name}} ({{ student.course_code }})"
-              data-college-name="{{ student.college_name }} ({{ student.college_code }})"
-              data-year="{{ student.year }}"
-              data-gender="{{ student.gender }}" 
-              data-profile-pic="{{ student.profile_pic_url }}"
+              data-student-id-prof="{{ student.id }}"
+              data-first-name-prof="{{ student.firstname }}"
+              data-last-name-prof="{{ student.lastname }}"
+              data-course-code-prof="{{ student.course_name}} ({{ student.course_code }})"
+              data-college-name-prof="{{ student.college_name }} ({{ student.college_code }})"
+              data-year-prof="{{ student.year }}"
+              data-gender-prof="{{ student.gender }}" 
+              data-profile-pic-prof="{{ student.profile_pic_url }}"
               data-bs-toggle="modal" 
               data-bs-target="#studentProfileModal">
               <i class="fa-regular fa-eye"></i>
@@ -242,18 +242,15 @@
                               <div class="card-body text-center">
                                   <!-- Profile picture image-->
                                   {% for student in students %}
-                                    <img class="img-account-profile rounded-circle mb-2" src="{{ student.profile_pic_url }}" id="img-source_{{ student.id }}">
-                                    <input type="file" id="profilePicture" style="display: none;" name="profilePicture" data-student-id="{{ student.id }}" class="profilePictureInput">
-                                  {% endfor %}
-
-                                  <!-- Profile picture help block-->
-                                  <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                                  <!-- Profile picture upload button-->
-                                  <label for="profilePicture" class="btn btn-primary">
-                                    Upload Profile Picture
-                                    
-                                </label>
-                               
+                                  <img class="img-account-profile rounded-circle mb-2" src="{{ student.profile_pic_url }}" id="img-source_{{ student.id }}">
+                                  <label for="profilePicture_{{ student.id }}" class="btn btn-primary" style="display: none;">
+                                      Upload Profile Picture
+                                  </label>
+                                  <input type="file" id="profilePicture_{{ student.id }}" style="display: none;" name="profilePicture_{{ student.id }}" data-student-id-prof="{{ student.id }}" class="profilePictureInput">
+                                 
+                                {% endfor %}
+                                 
+                                <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                                 
                               </div>
                           </div>
