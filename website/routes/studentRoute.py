@@ -15,24 +15,12 @@ def students():
     has_prev = False
     has_next = False
     
-    if request.method == "POST" and 'profilePicture' in request.files:
-        student_id = request.form.get("studentID")
-        profile_picture = request.files['profilePicture']
-        if profile_picture:
-            cloudinary_response = upload_profile_picture_to_cloudinary(profile_picture)
-            if cloudinary_response and 'secure_url' in cloudinary_response:
-                profile_pic_url = cloudinary_response['secure_url']
-                student_model.update_student_profile_pic(student_id, profile_pic_url)
-                flash('Profile picture updated successfully', 'success')
-            else:
-                flash('Failed to upload profile picture', 'error')
-
-
-
     if request.method == "POST":
         # Add a new student
         add_student()
     # Handle search query
+    handle_profile_picture()
+
     search_query = request.args.get("search")
     page_number = request.args.get('page_number', 1, type=int)
     page_size = request.args.get('page_size', 8, type=int)
@@ -72,6 +60,7 @@ def add_student():
     flash('Student created successfully', 'success')
 
 
+
 @studentRoute.route("/students/delete/<string:student_id>", methods=["DELETE"])
 def delete_student(student_id):
     result = student_model.delete_student(student_id)
@@ -91,23 +80,19 @@ def edit_student(student_id):
 
     return jsonify({'success': result == 'Student updated successfully'})
 
-# @studentRoute.route("/students", methods=["GET", "POST"])
-# def student_profile():
-#     if request.method == "POST" and 'profilePicture' in request.files:
-#         student_id = request.form.get("studentID")
-#         profile_picture = request.files['profilePicture']
-#         if profile_picture:
-#             # Upload the profile picture to Cloudinary
-#             # Make sure you configure Cloudinary properly
-#             cloudinary_response = upload_profile_picture_to_cloudinary(profile_picture)
-#             if cloudinary_response and 'secure_url' in cloudinary_response:
-#                 profile_pic_url = cloudinary_response['secure_url']
-#                 student_model.update_student_profile_pic(student_id, profile_pic_url)
-#                 flash('Profile picture updated successfully', 'success')
-#             else:
-#                 flash('Failed to upload profile picture', 'error')
 
-#     return render_template("student_profiles.html")
+def handle_profile_picture():
+    if 'profilePicture' in request.files:
+        student_id = request.form.get("studentId")
+        profile_picture = request.files['profilePicture']
+        if profile_picture:
+            cloudinary_response = upload_profile_picture_to_cloudinary(profile_picture)
+            if cloudinary_response and 'secure_url' in cloudinary_response:
+                profile_pic_url = cloudinary_response['secure_url']
+                student_model.update_student_profile_pic(student_id, profile_pic_url)
+                flash('Profile picture updated successfully', 'success')
+            else:
+                flash('Failed to upload profile picture', 'error')
 
 def upload_profile_picture_to_cloudinary(profile_picture):
     try:
@@ -137,8 +122,9 @@ def update_profile_pic():
         secure_url = data.get('secureUrl')
 
         # Replace this with your actual database update code
-        student_model.update_student_profile_pic(student_id, secure_url)
+        result = student_model.update_student_profile_pic(student_id, secure_url)
 
         return jsonify({'secureUrl': secure_url, 'message': 'Profile picture updated successfully'})
+
     except Exception as e:
         return jsonify({'error': 'Failed to update profile picture'})
