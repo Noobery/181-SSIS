@@ -243,7 +243,7 @@
                                   <!-- Profile picture image-->
                                   {% for student in students %}
                                   <img class="img-account-profile rounded-circle mb-2" src="{{ student.profile_pic_url }}" id="img-source_{{ student.id }}">
-                                  <label for="profilePicture_{{ student.id }}" class="btn btn-primary" style="display: none;">
+                                  <label for="profilePicture_{{ student.id }}" class="btn btn-primary profileUploadBtn" style="display: none;">
                                       Upload Profile Picture
                                   </label>
                                   <input type="file" id="profilePicture_{{ student.id }}" style="display: none;" name="profilePicture_{{ student.id }}" data-student-id-prof="{{ student.id }}" class="profilePictureInput">

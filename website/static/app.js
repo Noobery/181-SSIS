@@ -412,7 +412,7 @@ $('#studentProfileModal').on('show.bs.modal', function (event) {
       const studentID = button.getAttribute('data-student-id-prof');
 
       // Hide all upload buttons and inputs initially
-      const uploadButtons = document.querySelectorAll('.btn.btn-primary');
+      const uploadButtons = document.querySelectorAll('.profileUploadBtn');
       const uploadInputs = document.querySelectorAll('.profilePictureInput');
       uploadButtons.forEach(uploadButton => {
         uploadButton.style.display = 'none';
