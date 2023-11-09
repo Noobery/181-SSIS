@@ -1,4 +1,4 @@
-# 181-SSIS by Alrick Ivan A. Gicole
+# Simple Student Information System by Alrick Ivan A. Gicole
 
 Create .env file and inside the .env file input this.
 # your sql database here
