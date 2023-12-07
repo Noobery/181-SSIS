@@ -4,6 +4,8 @@ from website.models.courseModels import CourseModel
 from website.models.collegeModels import CollegeModel
 from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
+from cloudinary.uploader import destroy as cloudinary_destroy
+import cloudinary
 
 studentRoute = Blueprint('students', __name__)
 student_model = StudentModel()
@@ -19,7 +21,7 @@ def students():
         # Add a new student
         add_student()
     # Handle search query
-    handle_profile_picture()
+
 
     search_query = request.args.get("search")
     page_number = request.args.get('page_number', 1, type=int)
@@ -81,39 +83,6 @@ def edit_student(student_id):
     return jsonify({'success': result == 'Student updated successfully'})
 
 
-def handle_profile_picture():
-    if 'profilePicture' in request.files:
-        student_id = request.form.get("studentId")
-        profile_picture = request.files['profilePicture']
-        if profile_picture:
-            cloudinary_response = upload_profile_picture_to_cloudinary(profile_picture)
-            if cloudinary_response and 'secure_url' in cloudinary_response:
-                profile_pic_url = cloudinary_response['secure_url']
-                student_model.update_student_profile_pic(student_id, profile_pic_url)
-                flash('Profile picture updated successfully', 'success')
-            else:
-                flash('Failed to upload profile picture', 'error')
-
-def upload_profile_picture_to_cloudinary(profile_picture):
-    try:
-        # Upload the profile picture to Cloudinary
-        upload_result = upload(profile_picture, use_filename=True)
-
-        # Get the secure URL of the uploaded image
-        secure_url, options = cloudinary_url(upload_result['public_id'], format=upload_result['format'])
-        print(secure_url)
-        # Return the Cloudinary response
-        return {
-            "secure_url": secure_url,
-            "public_id": upload_result['public_id'],
-            "format": upload_result['format'],
-        }
-
-    except Exception as e:
-        # Handle any errors that may occur during the upload
-        print(f"Error uploading to Cloudinary: {str(e)}")
-        return None
-
 @studentRoute.route('/update_profile_pic', methods=['POST'])
 def update_profile_pic():
     try:
@@ -121,7 +90,14 @@ def update_profile_pic():
         student_id = data.get('studentId')
         secure_url = data.get('secureUrl')
 
-        # Replace this with your actual database update code
+        # Delete existing profile picture from Cloudinary
+        existing_profile_pic_url = student_model.get_student_profile_pic_url(student_id)
+        if existing_profile_pic_url:
+            public_id = existing_profile_pic_url.split('/')[-1].split('.')[0]
+            deletion_response = cloudinary_destroy(public_id)
+            print(deletion_response)
+        
+        # Update profile picture URL in the database
         result = student_model.update_student_profile_pic(student_id, secure_url)
 
         return jsonify({'secureUrl': secure_url, 'message': 'Profile picture updated successfully'})

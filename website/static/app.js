@@ -386,6 +386,8 @@ $(document).ready(function() {
             axios.post('/update_profile_pic', { studentId: studentId, secureUrl: res.data.secure_url })
                 .then(function (response) {
                     console.log(response);
+                    console.log('Secure URL:', res.data.secure_url);
+
                 })
                 .catch(function (error) {
                     console.log(error);

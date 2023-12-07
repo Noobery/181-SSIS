@@ -104,3 +104,12 @@ class StudentModel:
             return "Profile picture updated successfully"
         except Exception as e:
             return f"Failed to update profile picture: {str(e)}"
+        
+    def get_student_profile_pic_url(cls, student_id):
+        try:
+            cur = mysql.new_cursor(dictionary=True)
+            cur.execute("SELECT profile_pic_url FROM student WHERE id = %s", (student_id,))
+            result = cur.fetchone()
+            return result['profile_pic_url'] if result else None
+        except Exception as e:
+            return None
