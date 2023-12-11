@@ -192,37 +192,44 @@ $(document).ready(function() {
     });
 
     const ProfileStudent = document.querySelectorAll('.view-student');
+
     ProfileStudent.forEach(button => {
-    button.addEventListener('click', () => {
-        const studentID = button.getAttribute('data-student-id-prof');
-        const firstName = button.getAttribute('data-first-name-prof');
-        const lastName = button.getAttribute('data-last-name-prof');
-        const courseCode = button.getAttribute('data-course-code-prof');
-        const collegeName = button.getAttribute('data-college-name-prof');
-        const year = button.getAttribute('data-year-prof');
-        const gender = button.getAttribute('data-gender-prof');
-        const profilePicUrl = button.getAttribute('data-profile-pic-prof');
+        button.addEventListener('click', () => {
+            const studentID = button.getAttribute('data-student-id-prof');
+            const firstName = button.getAttribute('data-first-name-prof');
+            const lastName = button.getAttribute('data-last-name-prof');
+            const courseCode = button.getAttribute('data-course-code-prof');
+            const collegeName = button.getAttribute('data-college-name-prof');
+            const year = button.getAttribute('data-year-prof');
+            const gender = button.getAttribute('data-gender-prof');
+            const profilePicUrl = button.getAttribute('data-profile-pic-prof');
 
-        // Populate the edit form fields
-        const StudentIDField = document.getElementById('inputID');
-        const FirstNameField = document.getElementById('inputFirstName');
-        const LastNameField = document.getElementById('inputLastName');
-        const CourseField = document.getElementById('inputCourse');
-        const CollegeField = document.getElementById('inputCollege');
-        const YearField = document.getElementById('inputYear');
-        const GenderField = document.getElementById('inputGender');
-        const ProfilePicField = document.getElementById(`img-source_${studentID}`); // Use the correct ID
+            // Populate the edit form fields
+            const StudentIDField = document.getElementById('inputID');
+            const FirstNameField = document.getElementById('inputFirstName');
+            const LastNameField = document.getElementById('inputLastName');
+            const CourseField = document.getElementById('inputCourse');
+            const CollegeField = document.getElementById('inputCollege');
+            const YearField = document.getElementById('inputYear');
+            const GenderField = document.getElementById('inputGender');
+            const ProfilePicField = document.getElementById(`img-source_${studentID}`); // Use the correct ID
 
-        StudentIDField.value = studentID;
-        FirstNameField.value = firstName;
-        LastNameField.value = lastName;
-        CourseField.value = courseCode;
-        CollegeField.value = collegeName;
-        YearField.value = year;
-        GenderField.value = gender;
-        ProfilePicField.src = profilePicUrl; // Set the src attribute with profile_pic_url
+            StudentIDField.value = studentID;
+            FirstNameField.value = firstName;
+            LastNameField.value = lastName;
+            CourseField.value = courseCode;
+            CollegeField.value = collegeName;
+            YearField.value = year;
+            GenderField.value = gender;
+
+            console.log('profilePicUrl:', profilePicUrl);
+            ProfilePicField.src = (profilePicUrl && profilePicUrl !== '' && profilePicUrl.toLowerCase() !== 'none') ? profilePicUrl : 'static/default-prof.png';
+            console.log('Final src:', ProfilePicField.src);
+
+
+        });
     });
-    });
+
 
     
 
@@ -388,12 +395,31 @@ $(document).ready(function() {
                     console.log(response);
                     console.log('Secure URL:', res.data.secure_url);
 
+                    var flashMessage = response.data.message;
+
+                    // Get the modal header element
+                    var modalHeader = document.querySelector('.small.font-italic.text-muted.mb-4');
+
+                    // Create a new div for the flash message with the 'alert-success' class
+                    var flashDiv = document.createElement('div');
+                    flashDiv.className = 'alert alert-success';
+                    flashDiv.innerHTML = flashMessage;
+
+                    // Append the flash message div to the modal header
+                    modalHeader.appendChild(flashDiv);
+
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         }).catch(function (err) {
             console.log(err);
+            var flashMessage = 'Wrong file type or size is greater than 5MB';
+            var modalHeader = document.querySelector('.small.font-italic.text-muted.mb-4');
+            var flashDiv = document.createElement('div');
+            flashDiv.className = 'alert alert-danger';
+            flashDiv.innerHTML = flashMessage;
+            modalHeader.appendChild(flashDiv);
         });
     });
 });

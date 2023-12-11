@@ -2,16 +2,6 @@
 
 {% block content %}
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <div class="alert alert-primary mt-3" role="alert">
-    {% for message in messages %}
-        {{ message }}
-    {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %} 
-
 <div class="student_container">
   <div class="row">
     <div class="col-md-12">
@@ -223,11 +213,11 @@
 <div class="modal fade" id="studentProfileModal" tabindex="-1" aria-labelledby="studentProfileModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
       <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header studentProfile">
               <h5 class="modal-title" id="studentProfileModalLabel">Student Profile</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body studentProfile">
               <div class="container-xl px-4 mt-4">
                   <!-- Account page navigation-->
                   <nav class="nav nav-borders">
@@ -240,19 +230,20 @@
                           <div class="card mb-4 mb-xl-0">
                               <div class="card-header">Profile Picture</div>
                               <div class="card-body text-center">
-                                  <!-- Profile picture image-->
-                                  {% for student in students %}
-                                  <img class="img-account-profile rounded-circle mb-2" src="{{ student.profile_pic_url }}" id="img-source_{{ student.id }}">
-                                  <label for="profilePicture_{{ student.id }}" class="btn btn-primary profileUploadBtn" style="display: none;">
-                                      Upload Profile Picture
-                                  </label>
-                                  <input type="file" id="profilePicture_{{ student.id }}" style="display: none;" name="profilePicture_{{ student.id }}" data-student-id-prof="{{ student.id }}" class="profilePictureInput">
-                                 
-                                {% endfor %}
-                                 
-                                <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                                
-                              </div>
+                                <!-- Profile picture image-->
+                                {% for student in students %}
+                                <img class="img-account-profile rounded-circle mb-2" src="{{ student.profile_pic_url }}" id="img-source_{{ student.id }}">
+                                <label for="profilePicture_{{ student.id }}" class="btn btn-primary profileUploadBtn" style="display: none;">
+                                    Upload Profile Picture
+                                </label>
+                                <input type="file" id="profilePicture_{{ student.id }}" style="display: none;" name="profilePicture_{{ student.id }}" data-student-id-prof="{{ student.id }}" class="profilePictureInput">
+                               
+                              {% endfor %}
+                               
+                              <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                              
+                            </div>
+                            
                           </div>
                       </div>
                       <div class="col-xl-8">

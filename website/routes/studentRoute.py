@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, flash
+from flask import Blueprint, render_template, request, jsonify, flash, abort
 from website.models.studentModels import StudentModel
 from website.models.courseModels import CourseModel
 from website.models.collegeModels import CollegeModel
@@ -82,13 +82,24 @@ def edit_student(student_id):
 
     return jsonify({'success': result == 'Student updated successfully'})
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+MAX_FILE_SIZE_MB = 5  # Maximum allowed file size in megabytes
 
-@studentRoute.route('/update_profile_pic', methods=['POST'])
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 def update_profile_pic():
     try:
         data = request.get_json()
         student_id = data.get('studentId')
         secure_url = data.get('secureUrl')
+
+        # Check if the file size is greater than 5MB
+        max_size_bytes = MAX_FILE_SIZE_MB * 1024 * 1024  # Convert MB to bytes
+        if 'file' in request.files:
+            file = request.files['file']
+            if file and file.content_length > max_size_bytes:
+                abort(400, {'error': 'File size exceeds the maximum allowed (5MB)'})
 
         # Delete existing profile picture from Cloudinary
         existing_profile_pic_url = student_model.get_student_profile_pic_url(student_id)
@@ -96,7 +107,7 @@ def update_profile_pic():
             public_id = existing_profile_pic_url.split('/')[-1].split('.')[0]
             deletion_response = cloudinary_destroy(public_id)
             print(deletion_response)
-        
+
         # Update profile picture URL in the database
         result = student_model.update_student_profile_pic(student_id, secure_url)
 
@@ -104,3 +115,8 @@ def update_profile_pic():
 
     except Exception as e:
         return jsonify({'error': 'Failed to update profile picture'})
+
+# Add this route to your Flask application
+@studentRoute.route('/update_profile_pic', methods=['POST'])
+def route_update_profile_pic():
+    return update_profile_pic()
