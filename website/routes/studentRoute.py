@@ -6,22 +6,56 @@ from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
 from cloudinary.uploader import destroy as cloudinary_destroy
 import cloudinary
+import os
 
 studentRoute = Blueprint('students', __name__)
 student_model = StudentModel()
 course_model = CourseModel()
 college_model = CollegeModel()
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+MAX_FILE_SIZE_MB = 5  # Maximum allowed file size in megabytes
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @studentRoute.route("/students", methods=["GET", "POST"])
 def students():
     has_prev = False
     has_next = False
-    
-    if request.method == "POST":
-        # Add a new student
-        add_student()
-    # Handle search query
 
+    max_size_bytes = MAX_FILE_SIZE_MB * 1024 * 1024
+
+    if request.method == "POST":
+        profile_file = request.files.get("file")
+
+        if not profile_file:
+            student_id = add_student()
+            print(student_id)
+        elif allowed_file(profile_file.filename):
+            # Check file size before saving
+            profile_file.seek(0, os.SEEK_END)  # Move to the end of the file
+            file_size = profile_file.tell()  # Get the file size
+            profile_file.seek(0)  # Move back to the beginning of the file
+
+            print("length", file_size)
+            if file_size > max_size_bytes:
+                flash('File size exceeds the maximum allowed (5MB). Please upload a smaller file.', 'danger')
+            else:
+                print('prof', profile_file.filename)  # Adjusted to match FormData key
+                student_id = add_student()
+                print(student_id)
+                upload_result = cloudinary.uploader.upload(profile_file)
+                secure_url = upload_result['url']
+                print(secure_url)
+                student_model.update_student_profile_pic(student_id, secure_url)
+        else:
+            flash('Invalid file type. Please upload a valid file.', 'danger')
+
+
+
+
+        
 
     search_query = request.args.get("search")
     page_number = request.args.get('page_number', 1, type=int)
@@ -60,6 +94,7 @@ def add_student():
     gender = request.form.get("gender")
     student_model.create_student(id, firstname, lastname, course_code, year, gender)
     flash('Student created successfully', 'success')
+    return id
 
 
 
@@ -82,11 +117,7 @@ def edit_student(student_id):
 
     return jsonify({'success': result == 'Student updated successfully'})
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
-MAX_FILE_SIZE_MB = 5  # Maximum allowed file size in megabytes
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def update_profile_pic():
     try:
@@ -108,8 +139,9 @@ def update_profile_pic():
             deletion_response = cloudinary_destroy(public_id)
             print(deletion_response)
 
-        # Update profile picture URL in the database
-        result = student_model.update_student_profile_pic(student_id, secure_url)
+        upload_result = cloudinary.uploader.upload(file)
+        secure_url = upload_result['url']
+        student_model.update_student_profile_pic(student_id, secure_url)
 
         return jsonify({'secureUrl': secure_url, 'message': 'Profile picture updated successfully'})
 
