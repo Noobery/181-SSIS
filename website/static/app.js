@@ -355,74 +355,61 @@ $(document).ready(function() {
   var CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dpydk3dsv/upload';
   var CLOUDINARY_UPLOAD_PRESET = 'cjxybr6b';
   
-    var uploadProfilePicButtons = document.querySelectorAll('.profilePictureInput');
-    var imgSources = document.querySelectorAll('.img-account-profile');
-
-    uploadProfilePicButtons.forEach(function (uploadProfilePicButton) {
-        uploadProfilePicButton.addEventListener('change', function (event) {
-            var fileInput = event.currentTarget; // Use event.currentTarget
-            var file = fileInput.files[0];
-            
-            console.log('Change event fired:', event);
-            var formData = new FormData();
-            formData.append('file', file);
-            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-
-            var studentId = fileInput.getAttribute('data-student-id-prof'); // Get the associated student ID
-            console.log('Student ID:', studentId);
-            console.log('File Data:', file);
-        axios({
-            url: CLOUDINARY_URL,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            data: formData
-        }).then(function (res) {
-            console.log(res);
-
-            // Find the corresponding image element and update its src
-            var imgSource = document.querySelector('#img-source_' + studentId);
-            if (imgSource) {
-                imgSource.src = res.data.secure_url;
-                console.log('Student ID:', studentId);
-                console.log('Image Source Element:', imgSource);
-            }
-           
-            // Send the studentId and secure_url to your server for database update
-            axios.post('/update_profile_pic', { studentId: studentId, secureUrl: res.data.secure_url })
-                .then(function (response) {
-                    console.log(response);
-                    console.log('Secure URL:', res.data.secure_url);
-
-                    var flashMessage = response.data.message;
-
-                    // Get the modal header element
-                    var modalHeader = document.querySelector('.small.font-italic.text-muted.mb-4');
-
-                    // Create a new div for the flash message with the 'alert-success' class
-                    var flashDiv = document.createElement('div');
-                    flashDiv.className = 'alert alert-success';
-                    flashDiv.innerHTML = flashMessage;
-
-                    // Append the flash message div to the modal header
-                    modalHeader.appendChild(flashDiv);
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }).catch(function (err) {
-            console.log(err);
-            var flashMessage = 'Wrong file type or size is greater than 5MB';
-            var modalHeader = document.querySelector('.small.font-italic.text-muted.mb-4');
-            var flashDiv = document.createElement('div');
-            flashDiv.className = 'alert alert-danger';
-            flashDiv.innerHTML = flashMessage;
-            modalHeader.appendChild(flashDiv);
-        });
-    });
-});
+  var uploadProfilePicButtons = document.querySelectorAll('.profilePictureInput');
+  var imgSources = document.querySelectorAll('.img-account-profile');
+  
+  uploadProfilePicButtons.forEach(function (uploadProfilePicButton) {
+      uploadProfilePicButton.addEventListener('change', function (event) {
+          var fileInput = event.currentTarget;
+          var file = fileInput.files[0];
+  
+          var formData = new FormData();
+          formData.append('file', file);
+          formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  
+          var studentId = fileInput.getAttribute('data-student-id-prof');
+  
+          axios({
+              url: CLOUDINARY_URL,
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              data: formData
+          }).then(function (res) {
+              // Update the image source with the new URL
+              var imgSource = document.querySelector('#img-source_' + studentId);
+              if (imgSource) {
+                  imgSource.src = res.data.secure_url;
+              }
+  
+              // Send the studentId and secure_url to your server for database update
+              axios.post('/update_profile_pic', { studentId: studentId, secureUrl: res.data.secure_url })
+                  .then(function (response) {
+                      // Display a success flash message
+                      var flashMessage = response.data.message;
+                      var modalHeader = document.querySelector('.small.font-italic.text-muted.mb-4');
+                      var flashDiv = document.createElement('div');
+                      flashDiv.className = 'alert alert-success';
+                      flashDiv.innerHTML = flashMessage;
+                      modalHeader.appendChild(flashDiv);
+                  })
+                  .catch(function (error) {
+                      console.log(error);
+                  });
+          }).catch(function (err) {
+              // Display an error flash message
+              console.log(err);
+              var flashMessage = 'Wrong file type or size is greater than 5MB';
+              var modalHeader = document.querySelector('.small.font-italic.text-muted.mb-4');
+              var flashDiv = document.createElement('div');
+              flashDiv.className = 'alert alert-danger';
+              flashDiv.innerHTML = flashMessage;
+              modalHeader.appendChild(flashDiv);
+          });
+      });
+  });
+  
 
 $('#studentProfileModal').on('show.bs.modal', function (event) {
     var modal = $(this);
