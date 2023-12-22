@@ -27,6 +27,7 @@ class StudentModel:
                 FROM student
                 INNER JOIN course ON student.course_code = course.code
                 INNER JOIN college ON course.college_code = college.code 
+                ORDER BY student.id ASC
                 LIMIT %s OFFSET %s
             """, [page_size, offset])
 
@@ -49,6 +50,7 @@ class StudentModel:
             }
         except Exception as e:
             return f"Failed to retrieve students: {str(e)}"
+
 
         
     @classmethod
